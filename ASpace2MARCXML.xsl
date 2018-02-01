@@ -52,17 +52,26 @@
             </marc:datafield>
             
             <marc:datafield tag="245" ind1=" " ind2=" ">
-                <xsl:analyze-string select="ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text()" regex="^A Guide to the (.*,) (.*)">
-                    <xsl:matching-substring>
-                        <marc:subfield code="a">
-                            <xsl:value-of select="regex-group(1)"/>
-                        </marc:subfield>
-                        <marc:subfield code="f">
-                            <xsl:value-of select="regex-group(2)"/>
-                            <xsl:text>.</xsl:text>
-                        </marc:subfield>                        
-                    </xsl:matching-substring>
-                </xsl:analyze-string>
+                <xsl:choose>
+                    <!-- dates in unittitle in subfield f -->
+                    <xsl:when test="matches(ead:archdesc/ead:did/ead:unittitle/text(),'\d{4}')">
+                        <xsl:analyze-string select="ead:archdesc/ead:did/ead:unittitle/text()" regex="^(.*?), ([0-9]{{4}}.*)">
+                            <xsl:matching-substring>
+                                <marc:subfield code="a">
+                                    <xsl:value-of select="regex-group(1)"/>
+                                    <xsl:text>,</xsl:text>
+                                </marc:subfield>
+                                <marc:subfield code="f">
+                                    <xsl:value-of select="normalize-space(regex-group(2))"/>
+                                    <xsl:text>.</xsl:text>
+                                </marc:subfield>                        
+                            </xsl:matching-substring>
+                        </xsl:analyze-string>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="normalize-space(ead:archdesc/ead:did/ead:unittitle)"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </marc:datafield>
             <marc:datafield tag="246" ind1=" " ind2=" ">
                 <marc:subfield code="a">OTHER TITLE</marc:subfield>

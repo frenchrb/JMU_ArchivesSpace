@@ -131,6 +131,9 @@
                 <marc:subfield code="a">
                     <xsl:for-each select="ead:archdesc/ead:bioghist/ead:p">
                         <xsl:value-of select="normalize-space(.)"/>
+                        <xsl:if test="not(position() = last())">
+                            <xsl:text> </xsl:text>
+                        </xsl:if>
                     </xsl:for-each>
                 </marc:subfield>
             </marc:datafield>

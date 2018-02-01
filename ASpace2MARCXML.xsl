@@ -41,10 +41,16 @@
                 <marc:subfield code="a">VMCS</marc:subfield>
             </marc:datafield>
             <marc:datafield tag="099" ind1=" " ind2="9">
-                <marc:subfield code="a">SC</marc:subfield>
-                <marc:subfield code="a">
-                    <xsl:value-of select="substring(ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/ead:num/text(),4,4)"/>
-                </marc:subfield>
+                <xsl:analyze-string select="ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/ead:num/text()" regex="^([A-Z]{{2}}) (\d*)$">
+                    <xsl:matching-substring>
+                        <marc:subfield code="a">
+                            <xsl:value-of select="regex-group(1)"/>
+                        </marc:subfield>
+                        <marc:subfield code="a">
+                            <xsl:value-of select="regex-group(2)"/>
+                        </marc:subfield>
+                    </xsl:matching-substring>
+                </xsl:analyze-string> 
             </marc:datafield> 
             
             <marc:datafield tag="1XX" ind1=" " ind2=" ">

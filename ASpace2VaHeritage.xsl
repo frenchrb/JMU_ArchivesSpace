@@ -323,9 +323,9 @@
     </xsl:template>
     
     <!--Add "SC" to beginning of unitid if missing-->
-    <xsl:template match="ead/archdesc/did/unitid/text()[not(contains(., 'SC'))]">
+    <!--<xsl:template match="ead/archdesc/did/unitid/text()[not(contains(., 'SC'))]">
         <xsl:text>SC </xsl:text><xsl:value-of select="."/>
-    </xsl:template>
+    </xsl:template>-->
     
     <!--Correct order of extents in physdesc-->
     <xsl:template match="ead/archdesc/did/physdesc">

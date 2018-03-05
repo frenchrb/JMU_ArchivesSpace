@@ -58,26 +58,40 @@
             </marc:datafield>
             
             <marc:datafield tag="245" ind1=" " ind2=" ">
-                <xsl:choose>
-                    <!-- dates in unittitle in subfield f -->
-                    <xsl:when test="matches(ead:archdesc/ead:did/ead:unittitle/text(),'\d{4}')">
-                        <xsl:analyze-string select="ead:archdesc/ead:did/ead:unittitle/text()" regex="^(.*?), ([0-9]{{4}}.*)">
-                            <xsl:matching-substring>
-                                <marc:subfield code="a">
-                                    <xsl:value-of select="regex-group(1)"/>
-                                    <xsl:text>,</xsl:text>
-                                </marc:subfield>
-                                <marc:subfield code="f">
-                                    <xsl:value-of select="normalize-space(regex-group(2))"/>
-                                    <xsl:text>.</xsl:text>
-                                </marc:subfield>                        
-                            </xsl:matching-substring>
-                        </xsl:analyze-string>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="normalize-space(ead:archdesc/ead:did/ead:unittitle)"/>
-                    </xsl:otherwise>
-                </xsl:choose>
+                <marc:subfield code="a">
+                    <xsl:value-of select="ead:archdesc/ead:did/ead:unittitle"/>
+                    <xsl:choose>
+                        <xsl:when test="ead:archdesc/ead:did/ead:unitdate">
+                            <xsl:text>,</xsl:text>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:text>.</xsl:text>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </marc:subfield>
+                <xsl:if test="ead:archdesc/ead:did/ead:unitdate">
+                    <marc:subfield code="f">
+                        <!-- list all non-bulk unitdates -->
+                        <xsl:for-each select="ead:archdesc/ead:did/ead:unitdate[@type!='bulk'] | ead:archdesc/ead:did/ead:unitdate[not(@type)]">
+                            <xsl:choose>
+                                <xsl:when test="position()=1">
+                                    <xsl:value-of select="."/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:text>, </xsl:text>
+                                    <xsl:value-of select="."/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:for-each>
+                        <!-- bulk unitdate -->
+                        <xsl:if test="ead:archdesc/ead:did/ead:unitdate[@type='bulk']">
+                            <xsl:text> (bulk </xsl:text>
+                            <xsl:value-of select="ead:archdesc/ead:did/ead:unitdate[@type='bulk']"/>
+                            <xsl:text>)</xsl:text>
+                        </xsl:if>
+                        <xsl:text>.</xsl:text>
+                    </marc:subfield>
+                </xsl:if>
             </marc:datafield>
             <marc:datafield tag="246" ind1=" " ind2=" ">
                 <marc:subfield code="a">OTHER TITLE</marc:subfield>

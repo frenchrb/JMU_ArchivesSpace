@@ -167,7 +167,7 @@
     <xsl:template match="/ead:ead/ead:archdesc/ead:did">
         <xsl:choose>
             <xsl:when test="unitdate">
-                <xsl:apply-templates select="./unitdate[@type='inclusive']"/>
+                <xsl:apply-templates select="./unitdate[@type='inclusive']"/> <!-- TODO make sure this is including unitdates with no type -->
                 <xsl:apply-templates select="./unitdate[@type='bulk']"/>
             </xsl:when>
             <xsl:otherwise>
@@ -248,11 +248,15 @@
     <xsl:template match="/ead:ead/ead:archdesc/ead:dsc/ead:c01/ead:did">
         <xsl:element name="did" namespace="urn:isbn:1-931666-22-9">
             <xsl:element name="unittitle" namespace="urn:isbn:1-931666-22-9">
-                <xsl:value-of select="./ead:unitid/text()"/>
-                <xsl:text>: </xsl:text>
+                <xsl:if test="./ead:unitid">
+                    <xsl:value-of select="./ead:unitid/text()"/>
+                    <xsl:text>: </xsl:text>
+                </xsl:if>
                 <xsl:value-of select="./ead:unittitle/text()"/>
-                <xsl:text>, </xsl:text>
-                <xsl:copy-of select="./ead:unitdate"/>
+                <xsl:if test="./ead:unitdate">
+                    <xsl:text>, </xsl:text>
+                    <xsl:copy-of select="./ead:unitdate"/>
+                </xsl:if>
             </xsl:element>
         </xsl:element>
     </xsl:template>

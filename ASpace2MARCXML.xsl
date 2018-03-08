@@ -93,9 +93,6 @@
                     </marc:subfield>
                 </xsl:if>
             </marc:datafield>
-            <marc:datafield tag="246" ind1=" " ind2=" ">
-                <marc:subfield code="a">OTHER TITLE</marc:subfield>
-            </marc:datafield>
                        
             <marc:datafield tag="300" ind1=" " ind2=" ">
                 <marc:subfield code="a">
@@ -192,10 +189,6 @@
                     </marc:subfield>
                 </marc:datafield>
             </xsl:for-each>
-            
-            <marc:datafield tag="7XX" ind1=" " ind2=" ">
-                <marc:subfield code="a">CREATOR/CONTRIBUTOR</marc:subfield>
-            </marc:datafield>
             
             <marc:datafield tag="856" ind1="4" ind2="0">
                 <marc:subfield code="z">Finding aid for this collection</marc:subfield>

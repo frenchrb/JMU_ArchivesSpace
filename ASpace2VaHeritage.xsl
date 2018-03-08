@@ -244,8 +244,8 @@
         </xsl:element>
     </xsl:template>
     
-    <!-- Move c01 unitid and unitdate inside unittitle -->
-    <xsl:template match="/ead:ead/ead:archdesc/ead:dsc/ead:c01/ead:did">
+    <!-- Move unitid and unitdate inside unittitle -->
+    <xsl:template match="//ead:*[matches(name(), 'c\d\d')]/ead:did">
         <xsl:element name="did" namespace="urn:isbn:1-931666-22-9">
             <xsl:element name="unittitle" namespace="urn:isbn:1-931666-22-9">
                 <xsl:if test="./ead:unitid">
@@ -258,17 +258,6 @@
                     <xsl:copy-of select="./ead:unitdate"/>
                 </xsl:if>
             </xsl:element>
-        </xsl:element>
-    </xsl:template>
-    
-    <!-- Move c02 unitdate inside unittitle -->
-    <xsl:template match="//ead:c02/ead:did">
-        <xsl:element name="did" namespace="urn:isbn:1-931666-22-9">
-            <xsl:element name="unittitle" namespace="urn:isbn:1-931666-22-9">
-                <xsl:value-of select="./ead:unittitle/text()"/>
-                <xsl:text>, </xsl:text>
-                <xsl:copy-of select="./ead:unitdate"/>
-            </xsl:element>
             <xsl:for-each select="./ead:container">
                 <xsl:apply-templates select="."/> 
             </xsl:for-each>       
@@ -276,7 +265,7 @@
     </xsl:template>
     
     <!-- Modify container label attribute -->
-    <xsl:template match="//ead:c02/ead:did/ead:container/@label[.='Mixed Materials']">
+    <xsl:template match="//ead:*[matches(name(), 'c\d\d')]/ead:did/ead:container/@label[.='Mixed Materials']">
         <xsl:attribute name="label">Box:Folder</xsl:attribute>
     </xsl:template>
     

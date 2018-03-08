@@ -53,11 +53,19 @@
                 </xsl:analyze-string> 
             </marc:datafield> 
             
-            <marc:datafield tag="1XX" ind1=" " ind2=" ">
+            <marc:datafield tag="100" ind1="1" ind2=" ">
                 <marc:subfield code="a">CREATOR</marc:subfield>
             </marc:datafield>
             
-            <marc:datafield tag="245" ind1=" " ind2=" ">
+            <xsl:variable name="nonfilingChars">
+                <xsl:choose>
+                    <xsl:when test="starts-with(ead:archdesc/ead:did/ead:unittitle, 'A ')">2</xsl:when>
+                    <xsl:when test="starts-with(ead:archdesc/ead:did/ead:unittitle, 'An ')">3</xsl:when>
+                    <xsl:when test="starts-with(ead:archdesc/ead:did/ead:unittitle, 'The ')">4</xsl:when>
+                    <xsl:otherwise>0</xsl:otherwise>
+                </xsl:choose>
+            </xsl:variable>
+            <marc:datafield tag="245" ind1="1" ind2="{$nonfilingChars}">
                 <marc:subfield code="a">
                     <xsl:value-of select="ead:archdesc/ead:did/ead:unittitle"/>
                     <xsl:choose>

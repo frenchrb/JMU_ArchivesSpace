@@ -19,7 +19,7 @@
     
     <xsl:template match="ead:ead">
         <xsl:variable name="dateString">
-            <xsl:analyze-string select="normalize-space(ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text())" regex="A Guide to .*?(\d{{4}}.*)$">
+            <xsl:analyze-string select="normalize-space(ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text())" regex="A Guide to .*?(\d{{4}}.*\)?)$">
                 <xsl:matching-substring>
                     <xsl:value-of select="regex-group(1)"/>
                 </xsl:matching-substring>
@@ -35,11 +35,22 @@
         </xsl:variable>
         
         <xsl:variable name="date2">
-            <xsl:analyze-string select="$dateString" regex="\d{{4}}$">
-                <xsl:matching-substring>
-                    <xsl:value-of select="."/>
-                </xsl:matching-substring>
-            </xsl:analyze-string>
+            <xsl:choose>
+                <xsl:when test="contains($dateString, '(')">
+                    <xsl:analyze-string select="$dateString" regex="(\d{{4}}) \(">
+                        <xsl:matching-substring>
+                            <xsl:value-of select="regex-group(1)"/>
+                        </xsl:matching-substring>
+                    </xsl:analyze-string>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:analyze-string select="$dateString" regex="(\d{{4}})$">
+                        <xsl:matching-substring>
+                            <xsl:value-of select="regex-group(1)"/>
+                        </xsl:matching-substring>
+                    </xsl:analyze-string>
+                </xsl:otherwise>
+            </xsl:choose>
         </xsl:variable>
         
         <marc:record>

@@ -18,6 +18,30 @@
     </xsl:template>
     
     <xsl:template match="ead:ead">
+        <xsl:variable name="dateString">
+            <xsl:analyze-string select="normalize-space(ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text())" regex="A Guide to .*?(\d{{4}}.*)$">
+                <xsl:matching-substring>
+                    <xsl:value-of select="regex-group(1)"/>
+                </xsl:matching-substring>
+            </xsl:analyze-string>
+        </xsl:variable>
+        
+        <xsl:variable name="date1">
+            <xsl:analyze-string select="$dateString" regex="^\d{{4}}">
+                <xsl:matching-substring>
+                    <xsl:value-of select="."/>
+                </xsl:matching-substring>
+            </xsl:analyze-string>
+        </xsl:variable>
+        
+        <xsl:variable name="date2">
+            <xsl:analyze-string select="$dateString" regex="\d{{4}}$">
+                <xsl:matching-substring>
+                    <xsl:value-of select="."/>
+                </xsl:matching-substring>
+            </xsl:analyze-string>
+        </xsl:variable>
+        
         <marc:record>
             <xsl:element name="marc:leader">
                 <xsl:text>     npc a22     Ii 4500</xsl:text>
@@ -25,9 +49,18 @@
             <marc:controlfield tag="008">
                 <xsl:value-of
                     select="format-date(current-date(),'[Y,2-2][M01][D01]')"/>
-                <xsl:text>i</xsl:text>
-                <xsl:value-of select="substring(ead:archdesc/ead:did/ead:unitdate[@type='inclusive']/text(),1,4)"/>
-                <xsl:value-of select="substring(ead:archdesc/ead:did/ead:unitdate[@type='inclusive']/text(),6,4)"/>
+                <xsl:choose>
+                    <xsl:when test="$date1=$date2">
+                        <xsl:text>s</xsl:text>
+                        <xsl:value-of select="$date1"/>
+                        <xsl:text>    </xsl:text>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:text>i</xsl:text>
+                        <xsl:value-of select="$date1"/>
+                        <xsl:value-of select="$date2"/>
+                    </xsl:otherwise>
+                </xsl:choose>
                 <xsl:text>vau                 eng d</xsl:text>
             </marc:controlfield>
             

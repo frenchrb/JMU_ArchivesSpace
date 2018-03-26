@@ -18,8 +18,16 @@
     </xsl:template>
     
     <xsl:template match="ead:ead">
+        <xsl:variable name="titleString">
+            <xsl:analyze-string select="normalize-space(ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text())" regex="A Guide to (.*?)(\d{{4}}.*\)?)$">
+                <xsl:matching-substring>
+                    <xsl:value-of select="normalize-space(regex-group(1))"/>
+                </xsl:matching-substring>
+            </xsl:analyze-string>
+        </xsl:variable>
+        
         <xsl:variable name="dateString">
-            <xsl:analyze-string select="normalize-space(ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text())" regex="A Guide to the .*?(\d{{4}}.*\)?)$">
+            <xsl:analyze-string select="normalize-space(ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text())" regex="A Guide to .*?(\d{{4}}.*\)?)$">
                 <xsl:matching-substring>
                     <xsl:value-of select="regex-group(1)"/>
                 </xsl:matching-substring>
@@ -103,19 +111,15 @@
             
             <xsl:variable name="nonfilingChars">
                 <xsl:choose>
-                    <xsl:when test="starts-with(ead:archdesc/ead:did/ead:unittitle, 'A ')">2</xsl:when>
-                    <xsl:when test="starts-with(ead:archdesc/ead:did/ead:unittitle, 'An ')">3</xsl:when>
-                    <xsl:when test="starts-with(ead:archdesc/ead:did/ead:unittitle, 'The ')">4</xsl:when>
+                    <xsl:when test="matches($titleString, '^[aA] ')">2</xsl:when>
+                    <xsl:when test="matches($titleString, '^[aA]n ')">3</xsl:when>
+                    <xsl:when test="matches($titleString, '^[tT]he ')">4</xsl:when>
                     <xsl:otherwise>0</xsl:otherwise>
                 </xsl:choose>
             </xsl:variable>
             <marc:datafield tag="245" ind1="1" ind2="{$nonfilingChars}">
                 <marc:subfield code="a">
-                    <xsl:analyze-string select="normalize-space(ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text())" regex="A Guide to the (.*?)(\d{{4}}.*\)?)$">
-                        <xsl:matching-substring>
-                            <xsl:value-of select="normalize-space(regex-group(1))"/>
-                        </xsl:matching-substring>
-                    </xsl:analyze-string>
+                    <xsl:value-of select="concat(upper-case(substring($titleString, 1, 1)), substring($titleString, 2))"/>
                     <xsl:if test="not($dateString)">
                         <xsl:text>.</xsl:text>
                     </xsl:if>

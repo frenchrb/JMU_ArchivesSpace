@@ -6,7 +6,7 @@
     xmlns:local="http://www.yoursite.org/namespace" 
     xmlns:ead="urn:isbn:1-931666-22-9" version="2.0"  exclude-result-prefixes="#all">
     
-    <xsl:output indent="yes" method="xml"
+    <xsl:output indent="yes" method="html"
         exclude-result-prefixes="#all"
         omit-xml-declaration="yes"
         encoding="utf-8"/>
@@ -29,7 +29,7 @@
                 <p style="test-align:center;"><strong><xsl:value-of select="ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/ead:num"/></strong></p> -->
                 
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong>Descriptive Summary</strong></p>
-                <!--<p align="left" style="margin-top:0;margin-bottom:0;"><strong>&nbsp;</strong></p>-->
+                <p align="left" style="margin-top:0;margin-bottom:0;"><strong><xsl:text>&#160;</xsl:text></strong></p>
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong>Repository: </strong>Special Collections, Carrier  Library, James Madison University</p>
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong>Title: </strong>
                     <xsl:analyze-string select="ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text()" regex="A Guide to the ">

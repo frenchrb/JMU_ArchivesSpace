@@ -6,7 +6,7 @@
     xmlns:local="http://www.yoursite.org/namespace" 
     xmlns:ead="urn:isbn:1-931666-22-9" version="2.0"  exclude-result-prefixes="#all">
     
-    <xsl:output indent="yes" method="xml"
+    <xsl:output indent="yes" method="html"
         exclude-result-prefixes="#all"
         omit-xml-declaration="yes"
         encoding="utf-8"/>

@@ -29,7 +29,7 @@
                 <p style="test-align:center;"><strong><xsl:value-of select="ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/ead:num"/></strong></p> -->
                 
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong>Descriptive Summary</strong></p>
-                <p align="left" style="margin-top:0;margin-bottom:0;"><strong><xsl:text>&#160;</xsl:text></strong></p>
+                <p align="left" style="margin-top:0;margin-bottom:0;"><xsl:text>&#160;</xsl:text></p>
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong>Repository: </strong>Special Collections, Carrier  Library, James Madison University</p>
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong>Title: </strong>
                     <xsl:analyze-string select="ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text()" regex="A Guide to the ">
@@ -55,7 +55,8 @@
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong><xsl:text>Abstract: </xsl:text></strong>
                     <xsl:value-of select="normalize-space(ead:archdesc/ead:did/ead:abstract)"/>
                 </p>
-
+                <p align="left" style="margin-top:0;margin-bottom:0;"><xsl:text>&#160;</xsl:text></p>
+                
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong>Administrative Information</strong></p>
 
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong><xsl:text>Access Restrictions: </xsl:text></strong>

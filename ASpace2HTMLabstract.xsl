@@ -11,7 +11,7 @@
         omit-xml-declaration="yes"
         encoding="utf-8"/>
     
-    <!-- Transforms EAD exported from ArchivesSpace into HTML for LET website
+    <!-- Transforms EAD exported from ArchivesSpace into HTML for JMU Libraries website
     Created 06/12/2018 by Rebecca B. French, Metadata Analyst Librarian at James Madison University
     This software is distributed under a Creative Commons Attribution Non-Commercial License -->
     

@@ -86,16 +86,21 @@
                 <p align="left" style="margin-top:0;">
                     <strong><xsl:text>Acquisition Information: </xsl:text></strong>
                     <xsl:value-of select="normalize-space(ead:archdesc/ead:acqinfo/ead:p)"/><br />
-                    <strong><xsl:text>Provenance: </xsl:text></strong>
-                    <xsl:for-each select="ead:archdesc/ead:custodhist/ead:p">
-                        <xsl:value-of select="normalize-space(.)"/>
-                    </xsl:for-each>
-                    <!--<xsl:value-of select="normalize-space(ead:archdesc/ead:custodhist/ead:p)"/><br />-->
-                    <strong><xsl:text>Processing Information: </xsl:text></strong>
-                    <xsl:for-each select="ead:archdesc/ead:processinfo/ead:p">
-                        <xsl:value-of select="normalize-space(.)"/>
-                    </xsl:for-each>
-                    <!--<xsl:value-of select="normalize-space(ead:archdesc/ead:processinfo/ead:p)"/>-->
+                    
+                    <xsl:if test="ead:archdesc/ead:custodhist">
+                        <strong><xsl:text>Provenance: </xsl:text></strong>
+                        <xsl:for-each select="ead:archdesc/ead:custodhist/ead:p">
+                            <xsl:value-of select="normalize-space(.)"/>
+                        </xsl:for-each>
+                        <br />
+                    </xsl:if>
+                    
+                    <xsl:if test="ead:archdesc/ead:processinfo">
+                        <strong><xsl:text>Processing Information: </xsl:text></strong>
+                        <xsl:for-each select="ead:archdesc/ead:processinfo/ead:p">
+                            <xsl:value-of select="normalize-space(.)"/>
+                        </xsl:for-each>
+                    </xsl:if>
                 </p>
                 
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong>Bio/Historical Note:</strong></p>

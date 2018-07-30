@@ -140,7 +140,33 @@
                                 <xsl:text>: </xsl:text>
                                 <xsl:value-of select="normalize-space(ead:did/ead:unittitle)"/>
                                 <xsl:text>, </xsl:text>
-                                <xsl:value-of select="normalize-space(ead:did/ead:unitdate)"/>
+                                <!--<xsl:value-of select="normalize-space(ead:did/ead:unitdate)"/>-->
+                                <xsl:choose>
+                                    <xsl:when test="not(ead:did/ead:unitdate)">
+                                        <xsl:text>undated</xsl:text>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <!-- list all non-bulk unitdates -->
+                                        <xsl:for-each
+                                            select="ead:did/ead:unitdate[@type != 'bulk'] | ead:did/ead:unitdate[not(@type)]">
+                                            <xsl:choose>
+                                                <xsl:when test="position() = 1">
+                                                    <xsl:value-of select="."/>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <xsl:text>, </xsl:text>
+                                                    <xsl:value-of select="."/>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                        </xsl:for-each>
+                                        <!-- bulk unitdate -->
+                                        <xsl:if test="ead:did/ead:unitdate[@type = 'bulk']">
+                                            <xsl:text> (bulk </xsl:text>
+                                            <xsl:value-of select="ead:did/ead:unitdate[@type = 'bulk']"/>
+                                            <xsl:text>)</xsl:text>
+                                        </xsl:if>
+                                    </xsl:otherwise>
+                                </xsl:choose>
                             </strong></p>
                             <xsl:for-each select="ead:scopecontent/ead:p">
                                 <p align="left"><xsl:value-of select="normalize-space(.)"/></p>
@@ -156,7 +182,33 @@
                                         <td valign="top">
                                             <xsl:value-of select="normalize-space(ead:did/ead:unittitle)"/>
                                             <xsl:text>, </xsl:text>
-                                            <xsl:value-of select="normalize-space(ead:did/ead:unitdate)"/>
+                                            <!--<xsl:value-of select="normalize-space(ead:did/ead:unitdate)"/>-->
+                                            <xsl:choose>
+                                                <xsl:when test="not(ead:did/ead:unitdate)">
+                                                    <xsl:text>undated</xsl:text>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <!-- list all non-bulk unitdates -->
+                                                    <xsl:for-each
+                                                        select="ead:did/ead:unitdate[@type != 'bulk'] | ead:did/ead:unitdate[not(@type)]">
+                                                        <xsl:choose>
+                                                            <xsl:when test="position() = 1">
+                                                                <xsl:value-of select="."/>
+                                                            </xsl:when>
+                                                            <xsl:otherwise>
+                                                                <xsl:text>, </xsl:text>
+                                                                <xsl:value-of select="."/>
+                                                            </xsl:otherwise>
+                                                        </xsl:choose>
+                                                    </xsl:for-each>
+                                                    <!-- bulk unitdate -->
+                                                    <xsl:if test="ead:did/ead:unitdate[@type = 'bulk']">
+                                                        <xsl:text> (bulk </xsl:text>
+                                                        <xsl:value-of select="ead:did/ead:unitdate[@type = 'bulk']"/>
+                                                        <xsl:text>)</xsl:text>
+                                                    </xsl:if>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
                                         </td>
                                         <td valign="top"><div align="right">
                                             <xsl:value-of select="ead:did/ead:container[@type='box']"/>
@@ -182,7 +234,33 @@
                                     <td valign="top">
                                         <xsl:value-of select="normalize-space(ead:did/ead:unittitle)"/>
                                         <xsl:text>, </xsl:text>
-                                        <xsl:value-of select="normalize-space(ead:did/ead:unitdate)"/>
+                                        <!--<xsl:value-of select="normalize-space(ead:did/ead:unitdate)"/>-->
+                                        <xsl:choose>
+                                            <xsl:when test="not(ead:did/ead:unitdate)">
+                                                <xsl:text>undated</xsl:text>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <!-- list all non-bulk unitdates -->
+                                                <xsl:for-each
+                                                    select="ead:did/ead:unitdate[@type != 'bulk'] | ead:did/ead:unitdate[not(@type)]">
+                                                    <xsl:choose>
+                                                        <xsl:when test="position() = 1">
+                                                            <xsl:value-of select="."/>
+                                                        </xsl:when>
+                                                        <xsl:otherwise>
+                                                            <xsl:text>, </xsl:text>
+                                                            <xsl:value-of select="."/>
+                                                        </xsl:otherwise>
+                                                    </xsl:choose>
+                                                </xsl:for-each>
+                                                <!-- bulk unitdate -->
+                                                <xsl:if test="ead:did/ead:unitdate[@type = 'bulk']">
+                                                    <xsl:text> (bulk </xsl:text>
+                                                    <xsl:value-of select="ead:did/ead:unitdate[@type = 'bulk']"/>
+                                                    <xsl:text>)</xsl:text>
+                                                </xsl:if>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
                                     </td>
                                     <td valign="top"><div align="right">
                                         <xsl:value-of select="ead:did/ead:container[@type='box']"/>

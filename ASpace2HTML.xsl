@@ -78,7 +78,12 @@
                     <xsl:value-of select="normalize-space(ead:archdesc/ead:accessrestrict)"/>
                 </p>
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong><xsl:text>Use Restrictions: </xsl:text></strong>
-                    <xsl:value-of select="normalize-space(ead:archdesc/ead:userestrict/ead:p)"/>
+                    <xsl:for-each select="ead:archdesc/ead:userestrict/ead:p">
+                        <xsl:value-of select="normalize-space(.)"/>
+                        <xsl:if test="not(position() = last())">
+                            <xsl:text> </xsl:text>
+                        </xsl:if>
+                    </xsl:for-each>
                 </p>
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong><xsl:text>Preferred Citation: </xsl:text></strong>
                     <xsl:value-of select="normalize-space(ead:archdesc/ead:prefercite/ead:p)"/>

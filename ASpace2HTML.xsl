@@ -92,6 +92,14 @@
                     <strong><xsl:text>Acquisition Information: </xsl:text></strong>
                     <xsl:value-of select="normalize-space(ead:archdesc/ead:acqinfo/ead:p)"/><br />
                     
+                    <xsl:if test="ead:archdesc/ead:altformavail">
+                        <strong><xsl:text>Alternate Formats: </xsl:text></strong>
+                        <xsl:for-each select="ead:archdesc/ead:altformavail/ead:p">
+                            <xsl:value-of select="normalize-space(.)"/>
+                        </xsl:for-each>
+                        <br />
+                    </xsl:if>
+                    
                     <xsl:if test="ead:archdesc/ead:custodhist">
                         <strong><xsl:text>Provenance: </xsl:text></strong>
                         <xsl:for-each select="ead:archdesc/ead:custodhist/ead:p">
@@ -132,9 +140,26 @@
                     </p>
                 </xsl:for-each>
                 
-                <p align="left"><strong><xsl:text>Separated Material: </xsl:text></strong>
-                    <xsl:value-of select="normalize-space(ead:archdesc/ead:separatedmaterial/ead:p)"/>
-                </p>
+                <xsl:if test="ead:archdesc/ead:originalsloc">
+                    <p align="left"><strong><xsl:text>Location of Originals</xsl:text></strong></p>
+                    <xsl:for-each select="ead:archdesc/ead:originalsloc/ead:p">
+                        <p><xsl:value-of select="normalize-space(.)"/></p>                        
+                    </xsl:for-each>
+                </xsl:if>
+                
+                <xsl:if test="ead:archdesc/ead:relatedmaterial">
+                    <p align="left"><strong><xsl:text>Related Material</xsl:text></strong></p>
+                    <xsl:for-each select="ead:archdesc/ead:relatedmaterial/ead:p">
+                        <p><xsl:value-of select="normalize-space(.)"/></p>
+                    </xsl:for-each>
+                </xsl:if>
+                
+                <xsl:if test="ead:archdesc/ead:separatedmaterial">
+                    <p align="left"><strong><xsl:text>Separated Material</xsl:text></strong></p>
+                    <xsl:for-each select="ead:archdesc/ead:separatedmaterial/ead:p">
+                        <p><xsl:value-of select="normalize-space(.)"/></p>
+                    </xsl:for-each>
+                </xsl:if> 
                 
                 <p align="left"><strong>Contents:</strong></p>
                 <xsl:choose>

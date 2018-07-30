@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     xmlns:xlink="http://www.w3.org/1999/xlink" 
     xmlns:ns2="http://www.w3.org/1999/xlink" 
@@ -14,7 +15,7 @@
     <!-- Transforms EAD exported from ArchivesSpace into HTML for JMU Libraries website
     Created 11/14/2017 by Rebecca B. French, Metadata Analyst Librarian at James Madison University
     This software is distributed under a Creative Commons Attribution Non-Commercial License -->
-    
+        
     <xsl:template match="ead:ead">
         <div id="content" class="full">
             <div>
@@ -306,52 +307,6 @@
                         </table>
                     </xsl:otherwise>
                 </xsl:choose>
-                
-                <!--
-                <xsl:for-each select="ead:archdesc/ead:dsc/ead:c01">
-                    <p align="left"><strong>
-                        <xsl:value-of select="normalize-space(ead:did/ead:unitid)"/>
-                        <xsl:text>: </xsl:text>
-                        <xsl:value-of select="normalize-space(ead:did/ead:unittitle)"/>
-                        <xsl:text>, </xsl:text>
-                        <xsl:value-of select="normalize-space(ead:did/ead:unitdate)"/>
-                    </strong></p>
-                    <xsl:for-each select="ead:scopecontent/ead:p">
-                        <p align="left"><xsl:value-of select="normalize-space(.)"/></p>
-                    </xsl:for-each>
-                    
-                    <table border="1" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td width="666" valign="top"><strong>Folder Title</strong></td>
-                            <td width="155" valign="top"><div align="right"><strong>Box:Folder</strong></div></td>
-                        </tr>
-                        <xsl:for-each select="ead:c02">
-                            <tr>
-                                <td valign="top">
-                                    <xsl:value-of select="normalize-space(ead:did/ead:unittitle)"/>
-                                    <xsl:text>, </xsl:text>
-                                    <xsl:value-of select="normalize-space(ead:did/ead:unitdate)"/>
-                                </td>
-                                <td valign="top"><div align="right">
-                                    <xsl:value-of select="ead:did/ead:container[@type='box']"/>
-                                    <xsl:text>:</xsl:text>
-                                    <xsl:value-of select="ead:did/ead:container[@type='folder']"/>
-                                </div></td>
-                            </tr>
-                        </xsl:for-each>
-                    </table>
-                </xsl:for-each>   
-                -->
-                
-                <xsl:if test="ead:archdesc/ead:relatedmaterial">
-                    <p align="left"><strong>Related Material:</strong></p>
-                    <p align="left">
-                        <xsl:for-each select="ead:archdesc/ead:relatedmaterial/ead:p">
-                            <xsl:value-of select="normalize-space(.)"/><br />                        
-                        </xsl:for-each>
-                    </p>
-                </xsl:if>
-                
             </div>
             <div>
                 <p><strong><xsl:text>Compiled by: </xsl:text></strong><xsl:value-of select="ead:eadheader/ead:filedesc/ead:titlestmt/ead:author"/></p>

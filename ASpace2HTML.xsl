@@ -76,7 +76,12 @@
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong>Administrative Information</strong></p>
 
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong><xsl:text>Access Restrictions: </xsl:text></strong>
-                    <xsl:value-of select="normalize-space(ead:archdesc/ead:accessrestrict)"/>
+                    <xsl:for-each select="ead:archdesc/ead:accessrestrict/ead:p">
+                        <xsl:value-of select="normalize-space(.)"/>
+                        <xsl:if test="not(position() = last())">
+                            <xsl:text> </xsl:text>
+                        </xsl:if>
+                    </xsl:for-each>
                 </p>
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong><xsl:text>Use Restrictions: </xsl:text></strong>
                     <xsl:for-each select="ead:archdesc/ead:userestrict/ead:p">

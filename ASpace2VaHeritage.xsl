@@ -207,16 +207,10 @@
     <xsl:template match="ead:ead/ead:archdesc/ead:processinfo"/>
     
     <!-- Change bibref elements to p in bibliography -->
-    <xsl:template match="/ead:ead/ead:archdesc/ead:bibliography">
-        <xsl:copy>
-            <xsl:copy-of select="@*"/>
-            <xsl:copy-of select="ead:head"/>
-            <xsl:for-each select="./ead:bibref">
-                <xsl:element name="p" namespace="urn:isbn:1-931666-22-9">
-                    <xsl:apply-templates select="@*|node()"/>
-                </xsl:element>  
-            </xsl:for-each>
-        </xsl:copy>
+    <xsl:template match="/ead:ead/ead:archdesc/ead:bibliography/ead:bibref">
+        <xsl:element name="p" namespace="urn:isbn:1-931666-22-9">
+            <xsl:apply-templates select="@*|node()"/>
+        </xsl:element>
     </xsl:template>
     
     <!-- Add head elements to controlaccess -->

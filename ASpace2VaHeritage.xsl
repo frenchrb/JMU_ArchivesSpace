@@ -233,14 +233,16 @@
                     <xsl:copy-of select="."/>
                 </xsl:for-each>
             </xsl:element>
-            <xsl:element name="controlaccess" namespace="urn:isbn:1-931666-22-9">
-                <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
-                    <xsl:text>Genre and Form Terms:</xsl:text>
+            <xsl:if test="./ead:genreform">
+                <xsl:element name="controlaccess" namespace="urn:isbn:1-931666-22-9">
+                    <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
+                        <xsl:text>Genre and Form Terms:</xsl:text>
+                    </xsl:element>
+                    <xsl:for-each select="./ead:genreform">
+                        <xsl:copy-of select="."/>
+                    </xsl:for-each>
                 </xsl:element>
-                <xsl:for-each select="./ead:genreform">
-                    <xsl:copy-of select="."/>
-                </xsl:for-each>
-            </xsl:element>
+            </xsl:if>
         </xsl:element>
     </xsl:template>
     

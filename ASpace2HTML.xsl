@@ -96,7 +96,13 @@
                 </p>
                 <p align="left" style="margin-top:0;">
                     <strong><xsl:text>Acquisition Information: </xsl:text></strong>
-                    <xsl:value-of select="normalize-space(ead:archdesc/ead:acqinfo/ead:p)"/><br />
+                    <xsl:for-each select="ead:archdesc/ead:acqinfo/ead:p">
+                        <xsl:value-of select="normalize-space(.)"/>
+                        <xsl:if test="not(position() = last())">
+                            <xsl:text> </xsl:text>
+                        </xsl:if>
+                    </xsl:for-each>
+                    <br />
                     
                     <xsl:if test="ead:archdesc/ead:altformavail">
                         <strong><xsl:text>Alternate Formats: </xsl:text></strong>
@@ -213,7 +219,7 @@
                             <table border="1" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td width="666" valign="top"><strong>Folder Title</strong></td>
-                                    <td width="155" valign="top"><div align="right"><strong>Box:Folder</strong></div></td>
+                                    <td width="155" valign="top"><div align="right"><strong>Box : Folder</strong></div></td>
                                 </tr>
                                 <xsl:for-each select="ead:c02">
                                     <tr>
@@ -265,7 +271,7 @@
                         <table border="1" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td width="666" valign="top"><strong>Folder Title</strong></td>
-                                <td width="155" valign="top"><div align="right"><strong>Box:Folder</strong></div></td>
+                                <td width="155" valign="top"><div align="right"><strong>Box : Folder</strong></div></td>
                             </tr>
                             <xsl:for-each select="ead:archdesc/ead:dsc/ead:c01">
                                 <tr>

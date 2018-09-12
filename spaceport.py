@@ -7,6 +7,7 @@ import configparser
 import os
 import requests
 from pathlib import Path
+from datetime import datetime
 
 #read config file
 config = configparser.ConfigParser()
@@ -138,7 +139,8 @@ def main(arglist):
     #print(coll_list)
     
     save_dir = Path(arglist[1])
-    out_dir = save_dir / 'Output'
+    date_time = datetime.now().strftime('%Y%M%d_%H%M%S')   
+    out_dir = save_dir / ('Output_' + date_time)
     Path.mkdir(out_dir) #should first check if exists
     
     sc_vihart = {}

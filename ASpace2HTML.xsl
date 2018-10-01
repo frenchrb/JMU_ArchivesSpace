@@ -293,7 +293,13 @@
                                                         </xsl:choose>
                                                         <xsl:if test="ead:accessrestrict">
                                                             <xsl:text> RESTRICTED</xsl:text>
-                                                        </xsl:if> 
+                                                        </xsl:if>
+                                                        <!-- Add folder-level description if it exists -->
+                                                        <xsl:if test=".[@level = 'file'] and ./ead:scopecontent">
+                                                            <xsl:for-each select="./ead:scopecontent/ead:p">
+                                                                <p style="margin-left:2em;margin-top:0em"><xsl:value-of select="."/></p>
+                                                            </xsl:for-each>
+                                                        </xsl:if>  
                                                     </td>
                                                     <td valign="top"><div align="right">
                                                         <xsl:value-of select="ead:did/ead:container[@type='box']"/>
@@ -305,18 +311,18 @@
                                                 </tr>
                                             </xsl:for-each>
                                             </xsl:when>
-                                        <xsl:otherwise><tr>
-                                            <td valign="top">
-                                                <xsl:value-of select="normalize-space(ead:did/ead:unittitle)"/>
-                                                <xsl:text>, </xsl:text>
-                                            <xsl:choose>
+                                        <xsl:otherwise>
+                                            <tr>
+                                                <td valign="top">
+                                                    <xsl:value-of select="normalize-space(ead:did/ead:unittitle)"/>
+                                                    <xsl:text>, </xsl:text>
+                                                    <xsl:choose>
                                                         <xsl:when test="not(ead:did/ead:unitdate)">
                                                             <xsl:text>undated</xsl:text>
                                                         </xsl:when>
                                                         <xsl:otherwise>
                                                             <!-- list all non-bulk unitdates -->
-                                                            <xsl:for-each
-                                                                select="ead:did/ead:unitdate[@type != 'bulk'] | ead:did/ead:unitdate[not(@type)]">
+                                                            <xsl:for-each select="ead:did/ead:unitdate[@type != 'bulk'] | ead:did/ead:unitdate[not(@type)]">
                                                                 <xsl:choose>
                                                                     <xsl:when test="position() = 1">
                                                                         <xsl:value-of select="."/>
@@ -338,15 +344,22 @@
                                                     <xsl:if test="ead:accessrestrict">
                                                         <xsl:text> RESTRICTED</xsl:text>
                                                     </xsl:if>
+                                                    <!-- Add folder-level description if it exists -->
+                                                    <xsl:if test=".[@level = 'file'] and ./ead:scopecontent">
+                                                        <xsl:for-each select="./ead:scopecontent/ead:p">
+                                                            <p style="margin-left:2em;margin-top:0em"><xsl:value-of select="."/></p>
+                                                        </xsl:for-each>
+                                                    </xsl:if>
                                                 </td>
-                                        <td valign="top"><div align="right">
+                                                <td valign="top"><div align="right">
                                                     <xsl:value-of select="ead:did/ead:container[@type='box']"/>
                                                     <xsl:if test="ead:did/ead:container[@type='folder']">
                                                         <xsl:text>:</xsl:text>
                                                         <xsl:value-of select="ead:did/ead:container[@type='folder']"/>
                                                     </xsl:if>
                                                 </div></td>
-                                            </tr></xsl:otherwise>
+                                            </tr>
+                                        </xsl:otherwise>
                                     </xsl:choose>
                                 </xsl:for-each>
                             </table>
@@ -391,6 +404,12 @@
                                                 </xsl:if>
                                             </xsl:otherwise>
                                         </xsl:choose>
+                                        <!-- Add folder-level description if it exists -->
+                                        <xsl:if test=".[@level = 'file'] and ./ead:scopecontent">
+                                            <xsl:for-each select="./ead:scopecontent/ead:p">
+                                                <p style="margin-left:2em;margin-top:0em"><xsl:value-of select="."/></p>
+                                            </xsl:for-each>
+                                        </xsl:if>
                                     </td>
                                     <td valign="top"><div align="right">
                                         <xsl:value-of select="ead:did/ead:container[@type='box']"/>

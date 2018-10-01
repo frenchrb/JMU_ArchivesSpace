@@ -128,7 +128,13 @@
                     </xsl:if>
                 </p>
                 
-                <p align="left" style="margin-top:0;margin-bottom:0;"><strong>Bio/Historical Note:</strong></p>
+                <!--Bio/Historical Note or Administrative History-->
+                <p align="left" style="margin-top:0;margin-bottom:0;">
+                    <strong>
+                        <xsl:value-of select="ead:archdesc/ead:bioghist/ead:head"/>
+                        <xsl:text>:</xsl:text>
+                    </strong>
+                </p>
                 <xsl:for-each select="ead:archdesc/ead:bioghist/ead:p">
                     <p align="left"><xsl:value-of select="normalize-space(.)"/></p>
                 </xsl:for-each>

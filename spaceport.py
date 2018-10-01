@@ -139,7 +139,7 @@ def main(arglist):
     #print(coll_list)
     
     save_dir = Path(arglist[1])
-    date_time = datetime.now().strftime('%Y%M%d_%H%M%S')   
+    date_time = datetime.now().strftime('%Y%m%d_%H%M%S')   
     out_dir = save_dir / ('Output_' + date_time)
     Path.mkdir(out_dir) #should first check if exists
     

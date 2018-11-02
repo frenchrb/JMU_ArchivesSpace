@@ -8,6 +8,7 @@ import os
 import requests
 from pathlib import Path
 from datetime import datetime
+import json
 
 #read config file
 config = configparser.ConfigParser()
@@ -37,7 +38,7 @@ def export_ead(list, out_dir, id_dict):
             print('Exporting ' + line.rstrip())
             
             #searches by id_0, which is our collection number (SC #### or UA ####)
-            results = (requests.get(repositoryBaseURL + '/search?page=1&aq={\"query\":{\"field\":\"id_0\",\"value\":\"' + line.rstrip() +'\",\"jsonmodel_type\":\"field_query\",\"negated\":false,\"literal\":false}}', headers=headers)).json()
+            results = (requests.get(repositoryBaseURL + '/search?page=1&aq={\"query\":{\"field\":\"identifier\",\"value\":\"' + line.rstrip() +'\",\"jsonmodel_type\":\"field_query\",\"negated\":false,\"literal\":false}}', headers=headers)).json()
             #print (json.dumps(results, indent=2))
             
             #searches by ead_id, which is vihart#####

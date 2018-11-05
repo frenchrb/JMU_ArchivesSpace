@@ -37,7 +37,7 @@ def export_ead(list, out_dir, id_dict):
         for line in f:
             print('Exporting ' + line.rstrip())
             
-            #searches by id_0, which is our collection number (SC #### or UA ####)
+            #searches by identifier, which is our collection number (SC #### or UA ####)
             results = (requests.get(repositoryBaseURL + '/search?page=1&aq={\"query\":{\"field\":\"identifier\",\"value\":\"' + line.rstrip() +'\",\"jsonmodel_type\":\"field_query\",\"negated\":false,\"literal\":false}}', headers=headers)).json()
             #print (json.dumps(results, indent=2))
             

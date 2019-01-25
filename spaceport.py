@@ -51,6 +51,7 @@ def export_ead(list, out_dir, id_dict):
             id = resource['uri']
             id_uri_string = id.replace('resources', 'resource_descriptions')
             ead = requests.get(baseURL + id_uri_string + '.xml' + export_options, headers = headers).text
+            ead = ead.replace(' & ', ' &amp; ') #temp fix for & issues
             
             coll_num = resource['id_0'].replace(' ','')
             if 'ead_id' in resource:

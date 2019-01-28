@@ -224,8 +224,8 @@
                         
                             <table border="1" cellpadding="0" cellspacing="0">
                                 <tr>
-                                    <td width="666" valign="top"><strong>Folder Title</strong></td>
-                                    <td width="155" valign="top"><div align="right"><strong>Box : Folder</strong></div></td>
+                                    <td width="666" valign="top"><strong>Title</strong></td>
+                                    <td width="250" valign="top"><div align="right"><strong>Container</strong></div></td>
                                 </tr>
                                 <xsl:for-each select="ead:c02">
                                     <xsl:choose>
@@ -342,11 +342,16 @@
                                                         </xsl:if>
                                                     </td>
                                                     <td valign="top"><div align="right">
-                                                        <xsl:value-of select="ead:did/ead:container[@type='box']"/>
-                                                        <xsl:if test="ead:did/ead:container[@type='folder']">
-                                                            <xsl:text>:</xsl:text>
-                                                            <xsl:value-of select="ead:did/ead:container[@type='folder']"/>
-                                                        </xsl:if>
+                                                        <!-- print each container type and number -->
+                                                        <xsl:for-each select="ead:did/ead:container">
+                                                            <!--<xsl:value-of select="upper-case(./@type)"/>-->
+                                                            <xsl:value-of select="concat(upper-case(substring(./@type, 1, 1)), substring(./@type, 2))"/>
+                                                            <xsl:text> </xsl:text>
+                                                            <xsl:value-of select="."/>
+                                                            <xsl:if test="not(position() = last())">
+                                                                <xsl:text>:</xsl:text>
+                                                            </xsl:if>
+                                                        </xsl:for-each>
                                                     </div></td>
                                                 </tr>
                                             </xsl:for-each>
@@ -426,11 +431,16 @@
                                                     </xsl:if>
                                                 </td>
                                                 <td valign="top"><div align="right">
-                                                    <xsl:value-of select="ead:did/ead:container[@type='box']"/>
-                                                    <xsl:if test="ead:did/ead:container[@type='folder']">
-                                                        <xsl:text>:</xsl:text>
-                                                        <xsl:value-of select="ead:did/ead:container[@type='folder']"/>
-                                                    </xsl:if>
+                                                    <!-- print each container type and number -->
+                                                    <xsl:for-each select="ead:did/ead:container">
+                                                        <!--<xsl:value-of select="upper-case(./@type)"/>-->
+                                                        <xsl:value-of select="concat(upper-case(substring(./@type, 1, 1)), substring(./@type, 2))"/>
+                                                        <xsl:text> </xsl:text>
+                                                        <xsl:value-of select="."/>
+                                                        <xsl:if test="not(position() = last())">
+                                                            <xsl:text>:</xsl:text>
+                                                        </xsl:if>
+                                                    </xsl:for-each>
                                                 </div></td>
                                             </tr>
                                         </xsl:otherwise>
@@ -444,8 +454,8 @@
                     <xsl:otherwise>
                         <table border="1" cellpadding="0" cellspacing="0">
                             <tr>
-                                <td width="666" valign="top"><strong>Folder Title</strong></td>
-                                <td width="155" valign="top"><div align="right"><strong>Box : Folder</strong></div></td>
+                                <td width="666" valign="top"><strong>Title</strong></td>
+                                <td width="250" valign="top"><div align="right"><strong>Container</strong></div></td>
                             </tr>
                             <xsl:for-each select="ead:archdesc/ead:dsc/ead:c01">
                                 <tr>
@@ -520,11 +530,16 @@
                                         </xsl:if>
                                     </td>
                                     <td valign="top"><div align="right">
-                                        <xsl:value-of select="ead:did/ead:container[@type='box']"/>
-                                        <xsl:if test="ead:did/ead:container[@type='folder']">
-                                            <xsl:text>:</xsl:text>
-                                            <xsl:value-of select="ead:did/ead:container[@type='folder']"/>
-                                        </xsl:if>
+                                        <!-- print each container type and number -->
+                                        <xsl:for-each select="ead:did/ead:container">
+                                            <!--<xsl:value-of select="upper-case(./@type)"/>-->
+                                            <xsl:value-of select="concat(upper-case(substring(./@type, 1, 1)), substring(./@type, 2))"/>
+                                            <xsl:text> </xsl:text>
+                                            <xsl:value-of select="."/>
+                                            <xsl:if test="not(position() = last())">
+                                                <xsl:text>:</xsl:text>
+                                            </xsl:if>
+                                        </xsl:for-each>
                                     </div></td>
                                 </tr>
                             </xsl:for-each>

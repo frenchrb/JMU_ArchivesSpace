@@ -300,8 +300,8 @@
                                                         <xsl:if test="ead:accessrestrict">
                                                             <xsl:text> RESTRICTED</xsl:text>
                                                         </xsl:if>
-                                                        <!-- Add folder-level description if it exists -->
-                                                        <xsl:if test=".[@level = 'file'] and ./ead:scopecontent">
+                                                        <!-- Add folder/item scopecontent if it exists -->
+                                                        <xsl:if test="(.[@level = 'file'] or .[@level = 'item']) and ./ead:scopecontent">
                                                             <xsl:for-each select="./ead:scopecontent/ead:p">
                                                                 <p style="margin-left:2em;margin-top:0em"><xsl:value-of select="."/></p>
                                                             </xsl:for-each>
@@ -384,8 +384,8 @@
                                                     <xsl:if test="ead:accessrestrict">
                                                         <xsl:text> RESTRICTED</xsl:text>
                                                     </xsl:if>
-                                                    <!-- Add folder-level description if it exists -->
-                                                    <xsl:if test=".[@level = 'file'] and ./ead:scopecontent">
+                                                    <!-- Add folder/item scopecontent if it exists -->
+                                                    <xsl:if test="(.[@level = 'file'] or .[@level = 'item']) and ./ead:scopecontent">
                                                         <xsl:for-each select="./ead:scopecontent/ead:p">
                                                             <p style="margin-left:2em;margin-top:0em"><xsl:value-of select="."/></p>
                                                         </xsl:for-each>
@@ -478,8 +478,8 @@
                                                 </xsl:if>
                                             </xsl:otherwise>
                                         </xsl:choose>
-                                        <!-- Add folder-level description if it exists -->
-                                        <xsl:if test=".[@level = 'file'] and ./ead:scopecontent">
+                                        <!-- Add folder/item scopecontent if it exists -->
+                                        <xsl:if test="(.[@level = 'file'] or .[@level = 'item']) and ./ead:scopecontent">
                                             <xsl:for-each select="./ead:scopecontent/ead:p">
                                                 <p style="margin-left:2em;margin-top:0em"><xsl:value-of select="."/></p>
                                             </xsl:for-each>

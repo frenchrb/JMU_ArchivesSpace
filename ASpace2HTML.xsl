@@ -225,7 +225,7 @@
                             <table border="1" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td width="666" valign="top"><strong>Title</strong></td>
-                                    <td width="250" valign="top"><div align="right"><strong>Container</strong></div></td>
+                                    <td width="250" valign="top"><div align="left"><strong>Container</strong></div></td>
                                 </tr>
                                 <xsl:for-each select="ead:c02">
                                     <xsl:choose>
@@ -341,7 +341,7 @@
                                                             </xsl:for-each>
                                                         </xsl:if>
                                                     </td>
-                                                    <td valign="top"><div align="right">
+                                                    <td valign="top"><div align="left">
                                                         <!-- print each container type and number -->
                                                         <xsl:for-each select="ead:did/ead:container">
                                                             <!--<xsl:value-of select="upper-case(./@type)"/>-->
@@ -430,7 +430,7 @@
                                                         </xsl:for-each>
                                                     </xsl:if>
                                                 </td>
-                                                <td valign="top"><div align="right">
+                                                <td valign="top"><div align="left">
                                                     <!-- print each container type and number -->
                                                     <xsl:for-each select="ead:did/ead:container">
                                                         <!--<xsl:value-of select="upper-case(./@type)"/>-->
@@ -455,7 +455,7 @@
                         <table border="1" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td width="666" valign="top"><strong>Title</strong></td>
-                                <td width="250" valign="top"><div align="right"><strong>Container</strong></div></td>
+                                <td width="250" valign="top"><div align="left"><strong>Container</strong></div></td>
                             </tr>
                             <xsl:for-each select="ead:archdesc/ead:dsc/ead:c01">
                                 <tr>
@@ -529,7 +529,7 @@
                                             </xsl:for-each>
                                         </xsl:if>
                                     </td>
-                                    <td valign="top"><div align="right">
+                                    <td valign="top"><div align="left">
                                         <!-- print each container type and number -->
                                         <xsl:for-each select="ead:did/ead:container">
                                             <!--<xsl:value-of select="upper-case(./@type)"/>-->

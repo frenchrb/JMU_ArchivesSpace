@@ -112,6 +112,13 @@ def html(in_file, out_dir):
     subprocess.call(['java', '-jar', config['Saxon']['saxon_path']+'saxon9he.jar', '-s:'+str(source.resolve()), '-xsl:Aspace2HTML.xsl', '-o:'+str(out_file.resolve())])
     return 'HTML transformation executed'
 
+def html_multi(in_file, out_dir):
+    #run Aspace2HTML-gencontainer.xsl transformation with Saxon
+    source = out_dir / 'Aspace_EADs' / in_file
+    out_file = out_dir / 'HTML_multi' / in_file.with_suffix('.html')
+    subprocess.call(['java', '-jar', config['Saxon']['saxon_path']+'saxon9he.jar', '-s:'+str(source.resolve()), '-xsl:Aspace2HTML-gencontainer.xsl', '-o:'+str(out_file.resolve())])
+    return 'HTML (multiple container types) transformation executed'
+
 def html_abstract(in_file, out_dir):
     #run Aspace2HTMLabstract.xsl transformation with Saxon
     source = out_dir / 'Aspace_EADs' / in_file
@@ -132,6 +139,7 @@ def main(arglist):
     parser.add_argument('--vaheritage', help='run ASpace2VaHeritage.xsl', action='store_true')
     parser.add_argument('--marcxml', help='run ASpace2MARCXML.xsl', action='store_true')
     parser.add_argument('--html', help='run ASpace2HTML.xsl', action='store_true')
+    parser.add_argument('--htmlmulti', help='run ASpace2HTML-gencontainer.xsl (multiple container types)', action='store_true')
     parser.add_argument('--htmlabs', help='run ASpace2HTMLabstract.xsl', action='store_true')
     parser.add_argument('--retainexport', help='retain EAD exported from ArchivesSpace', action='store_true')
     args = parser.parse_args(arglist)
@@ -162,6 +170,8 @@ def main(arglist):
                     print('    ' + marcxml(filename, out_dir))
                 if args.html:
                     print('    ' + html(filename, out_dir))
+                if args.htmlmulti:
+                    print('    ' + html_multi(filename, out_dir))
                 if args.htmlabs:
                     print('    ' + html_abstract(filename, out_dir))
                 if args.retainexport == False:

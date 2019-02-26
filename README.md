@@ -1,6 +1,6 @@
 * ASpace2MARCXML.xsl creates MARC record from EAD exported from ArchivesSpace
 * ASpace2VaHeritage.xsl modifies ArchivesSpace EAD for upload to Virginia Heritage
-* ASpace2HTML.xsl and ASpace2HTMLabstract.xsl create finding aid and abstract snippet for website
+* ASpace2HTML.xsl and ASpace2HTMLabstract.xsl create finding aid and abstract snippet for website. For finding aids with multiple container types, use ASpace2HTML-gencontainer.xsl instead.
 
 To run Spaceport with GUI: ```python spaceportGUI.py```
 
@@ -13,6 +13,7 @@ Optional arguments:
   --vaheritage    run ASpace2VaHeritage.xsl
   --marcxml       run ASpace2MARCXML.xsl
   --html          run ASpace2HTML.xsl
+  --htmlmulti     run ASpace2HTML-gencontainer.xsl (multiple container types)
   --htmlabs       run ASpace2HTMLabstract.xsl
   --retainexport  retain EAD exported from ArchivesSpace
 ```

@@ -19,7 +19,7 @@
     
     <xsl:template match="ead:ead">
         <xsl:variable name="titleString">
-            <xsl:analyze-string select="normalize-space(ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text())" regex="A Guide to (.*?)(\d{{4}}.*\)?)$">
+            <xsl:analyze-string select="normalize-space(ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text())" regex="A Guide to the (.*?)(\d{{4}}.*\)?)$">
                 <xsl:matching-substring>
                     <xsl:value-of select="normalize-space(regex-group(1))"/>
                 </xsl:matching-substring>

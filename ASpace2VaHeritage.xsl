@@ -215,29 +215,33 @@
     
     <!-- Add head elements to controlaccess -->
     <xsl:template match="/ead:ead/ead:archdesc/ead:controlaccess">
-        <xsl:element name="controlaccess" namespace="urn:isbn:1-931666-22-9">
-            <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
-                <xsl:text>Index Terms</xsl:text>
-            </xsl:element>
+        <xsl:if test="./ead:subject or ./ead:genreform">
             <xsl:element name="controlaccess" namespace="urn:isbn:1-931666-22-9">
                 <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
-                    <xsl:text>Subjects:</xsl:text>
+                    <xsl:text>Index Terms</xsl:text>
                 </xsl:element>
-                <xsl:for-each select="./ead:subject">
-                    <xsl:copy-of select="."/>
-                </xsl:for-each>
-            </xsl:element>
-            <xsl:if test="./ead:genreform">
-                <xsl:element name="controlaccess" namespace="urn:isbn:1-931666-22-9">
+                <xsl:if test="./ead:subject">
+                    <xsl:element name="controlaccess" namespace="urn:isbn:1-931666-22-9">
                     <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
-                        <xsl:text>Genre and Form Terms:</xsl:text>
+                        <xsl:text>Subjects:</xsl:text>
                     </xsl:element>
-                    <xsl:for-each select="./ead:genreform">
+                    <xsl:for-each select="./ead:subject">
                         <xsl:copy-of select="."/>
                     </xsl:for-each>
                 </xsl:element>
-            </xsl:if>
-        </xsl:element>
+                </xsl:if>
+                <xsl:if test="./ead:genreform">
+                    <xsl:element name="controlaccess" namespace="urn:isbn:1-931666-22-9">
+                        <xsl:element name="head" namespace="urn:isbn:1-931666-22-9">
+                            <xsl:text>Genre and Form Terms:</xsl:text>
+                        </xsl:element>
+                        <xsl:for-each select="./ead:genreform">
+                            <xsl:copy-of select="."/>
+                        </xsl:for-each>
+                    </xsl:element>
+                </xsl:if>
+            </xsl:element>
+        </xsl:if>
     </xsl:template>
     
     <!-- Move unitid and unitdate inside unittitle -->

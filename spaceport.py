@@ -69,11 +69,11 @@ def export_ead(list, out_dir, id_dict):
 def vaheritage(in_file, out_dir, id_dict):
     source = out_dir / 'Aspace_EADs' / in_file
     
-    #use vihart# as filename if it exists; otherwise use collection number
+    #use vihart# as filename if it exists; otherwise use collection number with '_VaHeritage' appended
     if id_dict[in_file.stem]:
         out_file = (out_dir / 'Va_Heritage' / id_dict[in_file.stem]).with_suffix('.xml')
     else:
-        out_file = out_dir / 'Va_Heritage' / in_file
+        out_file = (out_dir / 'Va_Heritage' / (in_file.stem + '_VaHeritage')).with_suffix('.xml')
     
     #run Aspace2VaHeritage.xsl transformation with Saxon
     subprocess.call(['java', '-jar', config['Saxon']['saxon_path']+'saxon9he.jar', '-s:'+str(source.resolve()), '-xsl:Aspace2VaHeritage.xsl', '-o:'+str(out_file.resolve())])

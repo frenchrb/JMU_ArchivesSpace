@@ -19,41 +19,42 @@
     <xsl:template match="ead:ead">
         <div id="content" class="full">
             <div>
-                <!--<xsl:analyze-string select="ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text()" regex="A Guide to the ">
-                    <xsl:matching-substring>
-                        <p style="text-align:center;margin-top:0;margin-bottom:0;"><strong><xsl:value-of select="."/></strong></p>
-                    </xsl:matching-substring>
-                    <xsl:non-matching-substring>
-                        <p style="text-align:center;margin-top:0;margin-bottom:0;"><strong><xsl:value-of select="."/></strong></p>
-                    </xsl:non-matching-substring>
-                </xsl:analyze-string>
-                <p style="test-align:center;"><strong><xsl:value-of select="ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/ead:num"/></strong></p> -->
+                <div id="requestlink">
+                    <p><a href="https://aeon.lib.jmu.edu">Request</a></p>
+                </div>
                 
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong>Descriptive Summary</strong></p>
                 <p align="left" style="margin-top:0;margin-bottom:0;"><xsl:text>&#160;</xsl:text></p>
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong>Repository: </strong>Special Collections, Carrier  Library, James Madison University</p>
-                <p align="left" style="margin-top:0;margin-bottom:0;"><strong>Title: </strong>
-                    <xsl:analyze-string select="ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text()" regex="A Guide to the ">
-                        <xsl:non-matching-substring><xsl:value-of select="."/></xsl:non-matching-substring>
-                    </xsl:analyze-string>
+                <p align="left" style="margin-top:0;margin-bottom:0;">
+                    <strong>Title: </strong>
+                    <span id="title">
+                        <xsl:analyze-string select="ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text()" regex="A Guide to the ">
+                            <xsl:non-matching-substring><xsl:value-of select="."/></xsl:non-matching-substring>
+                        </xsl:analyze-string>
+                    </span>
                 </p>
                 <p align="left" style="margin-top:0;margin-bottom:0;">
-                    <strong>Collection No.: </strong><xsl:value-of select="normalize-space(ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/ead:num)"/><br />
+                    <strong>Collection No.: </strong>
+                    <span id="callnum">
+                        <xsl:value-of select="normalize-space(ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/ead:num)"/>
+                    </span><br />
                     <strong>Creator: </strong>
-                    <xsl:choose>
-                        <xsl:when test="ead:archdesc/ead:did/ead:origination[@label='creator']">
-                            <xsl:for-each select="ead:archdesc/ead:did/ead:origination[@label='creator']">
-                                <xsl:value-of select="normalize-space(.)"/>
-                                <xsl:if test="not(position() = last())">
-                                    <xsl:text>; </xsl:text>
-                                </xsl:if>
-                            </xsl:for-each>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:text>Unknown</xsl:text>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                    <br />
+                    <span id="creator">
+                        <xsl:choose>
+                            <xsl:when test="ead:archdesc/ead:did/ead:origination[@label='creator']">
+                                <xsl:for-each select="ead:archdesc/ead:did/ead:origination[@label='creator']">
+                                    <xsl:value-of select="normalize-space(.)"/>
+                                    <xsl:if test="not(position() = last())">
+                                        <xsl:text>; </xsl:text>
+                                    </xsl:if>
+                                </xsl:for-each>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:text>Unknown</xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </span><br />
                 </p>
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong><xsl:text>Extent: </xsl:text></strong>
                     <xsl:value-of select="lower-case(ead:archdesc/ead:did/ead:physdesc/ead:extent[@altrender='carrier']/text())"/>

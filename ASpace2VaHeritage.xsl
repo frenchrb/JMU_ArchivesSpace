@@ -269,6 +269,12 @@
         <xsl:attribute name="label">Box:Folder</xsl:attribute>
     </xsl:template>
     
+    <!-- Modify Media Cabinet container type and label -->
+    <xsl:template match="//ead:*[matches(name(), 'c\d\d')]/ead:did/ead:container/@type[.='Media Cabinet']">
+        <xsl:attribute name="type">Box</xsl:attribute>
+        <xsl:attribute name="label">Media Cabinet</xsl:attribute>
+    </xsl:template>
+    
     <!--Remove date element in eadheader titleproper-->
     <xsl:template match="ead/eadheader/filedesc/titlestmt/titleproper/date">
         <xsl:value-of select="./text()"/>

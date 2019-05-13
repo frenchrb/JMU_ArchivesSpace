@@ -70,9 +70,11 @@
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong><xsl:text>Language: </xsl:text></strong>
                     <xsl:value-of select="ead:archdesc/ead:did/ead:langmaterial/ead:language"/>
                 </p>
-                <p align="left" style="margin-top:0;margin-bottom:0;"><strong><xsl:text>Abstract: </xsl:text></strong>
-                    <xsl:value-of select="normalize-space(ead:archdesc/ead:did/ead:abstract)"/>
-                </p>
+                <xsl:if test="ead:archdesc/ead:did/ead:abstract">
+                    <p align="left" style="margin-top:0;margin-bottom:0;"><strong><xsl:text>Abstract: </xsl:text></strong>
+                        <xsl:value-of select="normalize-space(ead:archdesc/ead:did/ead:abstract)"/>
+                    </p>
+                </xsl:if>
                 <p align="left" style="margin-top:0;margin-bottom:0;"><xsl:text>&#160;</xsl:text></p>
                 
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong>Administrative Information</strong></p>

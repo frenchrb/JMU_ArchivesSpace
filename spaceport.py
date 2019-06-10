@@ -177,6 +177,8 @@ def main(arglist):
                 if args.retainexport == False:
                     print('    ' + cleanup(out_dir / 'Aspace_EADs' / filename))
                 print()
+    print('Transformations complete')
+    print()
     
 if __name__ == '__main__':
     #print(parser.parse_args(sys.argv[1:]))

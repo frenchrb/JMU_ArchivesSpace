@@ -93,7 +93,7 @@
                 <marc:subfield code="a">VMCS</marc:subfield>
             </marc:datafield>
             <marc:datafield tag="099" ind1=" " ind2="9">
-                <xsl:analyze-string select="normalize-space(ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/ead:num/text())" regex="^([A-Z]{{2}}) (\d*)$">
+                <xsl:analyze-string select="normalize-space(ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/ead:num/text())" regex="^(SC|UA|SdArch) (\d*)$">
                     <xsl:matching-substring>
                         <marc:subfield code="a">
                             <xsl:value-of select="regex-group(1)"/>

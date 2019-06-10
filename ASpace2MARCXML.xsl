@@ -131,20 +131,23 @@
                     </marc:subfield>
                 </xsl:if>
             </marc:datafield>
-                       
-            <marc:datafield tag="300" ind1=" " ind2=" ">
-                <marc:subfield code="a">
-                    <xsl:value-of select="lower-case(ead:archdesc/ead:did/ead:physdesc/ead:extent[@altrender='carrier']/text())"/>
-                    <xsl:text>; </xsl:text>
-                    <xsl:for-each select="ead:archdesc/ead:did/ead:physdesc/ead:extent[not(@altrender='carrier')]">
-                        <xsl:value-of select="lower-case(./text())"/>
-                        <xsl:if test="not(position()=last())">
-                            <xsl:text>; </xsl:text>
-                        </xsl:if>
-                    </xsl:for-each>
-                    <xsl:text>.</xsl:text>
-                </marc:subfield>
-            </marc:datafield> 
+            
+            <xsl:for-each select="ead:archdesc/ead:did/ead:physdesc/ead:extent[@altrender]/..">
+                <marc:datafield tag="300" ind1=" " ind2=" ">
+                    <marc:subfield code="a">
+                        <xsl:value-of select="./ead:extent[@altrender='carrier']/text()"/>
+                        <xsl:text>; </xsl:text>
+                        <xsl:for-each select="./ead:extent[not(@altrender='carrier')]">
+                            <xsl:value-of select="./text()"/>
+                            <xsl:if test="not(position()=last())">
+                                <xsl:text>; </xsl:text>
+                            </xsl:if>
+                        </xsl:for-each>
+                        <xsl:text>.</xsl:text>
+                    </marc:subfield>
+                </marc:datafield>
+            </xsl:for-each>
+            
             <marc:datafield tag="336" ind1=" " ind2=" ">
                 <marc:subfield code="a">text</marc:subfield>
                 <marc:subfield code="b">txt</marc:subfield>

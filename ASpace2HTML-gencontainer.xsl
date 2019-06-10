@@ -57,10 +57,15 @@
                     </span><br />
                 </p>
                 <p align="left" style="margin-top:0;margin-bottom:0;"><strong><xsl:text>Extent: </xsl:text></strong>
-                    <xsl:value-of select="lower-case(ead:archdesc/ead:did/ead:physdesc/ead:extent[@altrender='carrier']/text())"/>
-                    <xsl:text>; </xsl:text>
-                    <xsl:for-each select="ead:archdesc/ead:did/ead:physdesc/ead:extent[not(@altrender='carrier')]">
-                        <xsl:value-of select="lower-case(./text())"/>
+                    <xsl:for-each select="ead:archdesc/ead:did/ead:physdesc/ead:extent[@altrender]/..">
+                        <xsl:value-of select="./ead:extent[@altrender='carrier']/text()"/>
+                        <xsl:text>, </xsl:text>
+                        <xsl:for-each select="./ead:extent[not(@altrender='carrier')]">
+                            <xsl:value-of select="./text()"/>
+                            <xsl:if test="not(position()=last())">
+                                <xsl:text>, </xsl:text>
+                            </xsl:if>
+                        </xsl:for-each>
                         <xsl:if test="not(position()=last())">
                             <xsl:text>; </xsl:text>
                         </xsl:if>

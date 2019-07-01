@@ -52,6 +52,8 @@ def run():
         args.append('--htmlabs')
     if c6var.get() == 1:
         args.append('--retainexport')
+    if c7var.get() == 1:
+        args.append('--htmlnew')
     #print(args)
     spaceport.main(args)
 
@@ -79,12 +81,14 @@ def main():
     global c4var
     global c5var
     global c6var
+    global c7var
     c1var = IntVar()
     c2var = IntVar()
     c3var = IntVar()
     c4var = IntVar()
     c5var = IntVar()
     c6var = IntVar()
+    c7var = IntVar()
     
     c1 = Checkbutton(left_frame, text='Virginia Heritage EAD', variable=c1var)
     c1.grid(row=10, sticky=W)
@@ -94,10 +98,13 @@ def main():
     c3.grid(row=12, sticky=W)
     c4 = Checkbutton(left_frame, text='HTML finding aid (multiple container types)', variable=c4var)
     c4.grid(row=13, sticky=W)
+    c7 = Checkbutton(left_frame, text='HTML finding aid (new design)', variable=c7var)
+    c7.grid(row=14, sticky=W)
     c5 = Checkbutton(left_frame, text='HTML abstract', variable=c5var)
-    c5.grid(row=14, sticky=W)
+    c5.grid(row=15, sticky=W)
     c6 = Checkbutton(left_frame, text='Retain exported Aspace EAD file', variable=c6var)
-    c6.grid(row=15, sticky=W)
+    c6.grid(row=16, sticky=W)
+    
     
     runButton = Button(left_frame, text='Run', height=2, width=25, command=run)
     runButton.grid(row=20)

@@ -8,11 +8,25 @@ import os
 import requests
 from pathlib import Path
 from datetime import datetime
+from subprocess import Popen, PIPE, TimeoutExpired
 import json
 
 #read config file
 config = configparser.ConfigParser()
 config.read('local_settings.ini')
+
+
+def run_subprocess(command):
+    process = Popen(command, stdout=PIPE, stderr=PIPE)
+    try:
+        out, err = process.communicate(timeout=15) # timeout time in seconds
+    except TimeoutExpired:
+        process.kill()
+        out, err = process.communicate()
+    if out:
+        print(out.strip().decode('utf-8'))
+    if err:
+        print(err.strip().decode('utf-8'))
 
 
 def export_ead(list, out_dir, id_dict):
@@ -66,6 +80,7 @@ def export_ead(list, out_dir, id_dict):
     print('EAD exports completed')
     return id_dict
 
+
 def vaheritage(in_file, out_dir, id_dict):
     source = out_dir / 'Aspace_EADs' / in_file
     
@@ -76,7 +91,8 @@ def vaheritage(in_file, out_dir, id_dict):
         out_file = (out_dir / 'Va_Heritage' / (in_file.stem + '_VaHeritage')).with_suffix('.xml')
     
     #run Aspace2VaHeritage.xsl transformation with Saxon
-    subprocess.call(['java', '-jar', config['Saxon']['saxon_path']+'saxon9he.jar', '-s:'+str(source.resolve()), '-xsl:Aspace2VaHeritage.xsl', '-o:'+str(out_file.resolve())])
+    command = ['java', '-jar', config['Saxon']['saxon_path']+'saxon9he.jar', '-s:'+str(source.resolve()), '-xsl:Aspace2VaHeritage.xsl', '-o:'+str(out_file.resolve())]
+    run_subprocess(' '.join(command))
     
     #non-XSLT changes
     with open(out_file, 'r') as file:
@@ -87,6 +103,7 @@ def vaheritage(in_file, out_dir, id_dict):
         file.write(filedata)
     
     return 'Virginia Heritage transformation executed (' + out_file.stem + ')'
+
 
 def marcxml(in_file, out_dir):
     #run Aspace2MARCXML.xsl transformation with Saxon
@@ -102,34 +119,42 @@ def marcxml(in_file, out_dir):
     
     source = out_dir / 'Aspace_EADs' / in_file
     out_file = (out_dir / 'MARCXML' / (in_file.stem + '_MARC')).with_suffix('.xml')
-    subprocess.call(['java', '-jar', config['Saxon']['saxon_path']+'saxon9he.jar', '-s:'+str(source.resolve()), '-xsl:Aspace2MARCXML.xsl', '-o:'+str(out_file.resolve())])
+    command = ['java', '-jar', config['Saxon']['saxon_path']+'saxon9he.jar', '-s:'+str(source.resolve()), '-xsl:Aspace2MARCXML.xsl', '-o:'+str(out_file.resolve())]
+    run_subprocess(' '.join(command))
     return 'MARCXML transformation executed'
+
 
 def html(in_file, out_dir):
     #run Aspace2HTML.xsl transformation with Saxon
     source = out_dir / 'Aspace_EADs' / in_file
     out_file = out_dir / 'HTML' / in_file.with_suffix('.html')
-    subprocess.call(['java', '-jar', config['Saxon']['saxon_path']+'saxon9he.jar', '-s:'+str(source.resolve()), '-xsl:Aspace2HTML.xsl', '-o:'+str(out_file.resolve())])
+    command = ['java', '-jar', config['Saxon']['saxon_path']+'saxon9he.jar', '-s:'+str(source.resolve()), '-xsl:Aspace2HTML.xsl', '-o:'+str(out_file.resolve())]
+    run_subprocess(' '.join(command))
     return 'HTML transformation executed'
+
 
 def html_multi(in_file, out_dir):
     #run Aspace2HTML-gencontainer.xsl transformation with Saxon
     source = out_dir / 'Aspace_EADs' / in_file
     out_file = out_dir / 'HTML_multi' / in_file.with_suffix('.html')
-    subprocess.call(['java', '-jar', config['Saxon']['saxon_path']+'saxon9he.jar', '-s:'+str(source.resolve()), '-xsl:Aspace2HTML-gencontainer.xsl', '-o:'+str(out_file.resolve())])
+    command = ['java', '-jar', config['Saxon']['saxon_path']+'saxon9he.jar', '-s:'+str(source.resolve()), '-xsl:Aspace2HTML-gencontainer.xsl', '-o:'+str(out_file.resolve())]
+    run_subprocess(' '.join(command))
     return 'HTML (multiple container types) transformation executed'
+
 
 def html_abstract(in_file, out_dir):
     #run Aspace2HTMLabstract.xsl transformation with Saxon
     source = out_dir / 'Aspace_EADs' / in_file
     out_file = (out_dir / 'HTML_abstract' / (in_file.stem + 'abstract')).with_suffix('.html')
-    subprocess.call(['java', '-jar', config['Saxon']['saxon_path']+'saxon9he.jar', '-s:'+str(source.resolve()), '-xsl:Aspace2HTMLabstract.xsl', '-o:'+str(out_file.resolve())])
+    command = ['java', '-jar', config['Saxon']['saxon_path']+'saxon9he.jar', '-s:'+str(source.resolve()), '-xsl:Aspace2HTMLabstract.xsl', '-o:'+str(out_file.resolve())]
+    run_subprocess(' '.join(command))
     return 'HTML abstract transformation executed'
 
 def cleanup(filename):
     #remove exported Aspace EAD file
     os.remove(filename)
     return 'Aspace EAD file removed'
+
 
 def main(arglist):
     #print(arglist)

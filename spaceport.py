@@ -17,7 +17,7 @@ config.read('local_settings.ini')
 
 
 def run_subprocess(command):
-    process = Popen(command, stdout=PIPE, stderr=PIPE)
+    process = Popen(command, stdin=PIPE, stdout=PIPE, stderr=PIPE)
     try:
         out, err = process.communicate(timeout=15) # timeout time in seconds
     except TimeoutExpired:

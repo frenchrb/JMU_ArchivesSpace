@@ -247,6 +247,31 @@
             table td.c10{padding-left: 9em;}
             table td.c11{padding-left: 10em;}
             table td.c12{padding-left: 11em;}
+            
+            /*--- RBF Request button styles ---*/
+            #requestlink {
+                text-align: center;
+                padding: 2em 1em;
+            }
+            .btn {
+                background-color: #14a6dc;
+                color: white;
+                border: 1px solid #14a6dc;
+                font-size: 1.25em;
+                font-weight: 500;
+                margin: 0;
+                padding: .5em 1.25em;
+                text-align: center;
+                display: inline-block;
+                border-radius: 8px;
+                cursor: pointer;
+            }
+            .btn:hover {
+                background-color: white;
+                color: #14a6dc;
+                border: 1px solid #e1e1e8;
+            }
+             
         </style>
     </xsl:template>
     
@@ -277,6 +302,12 @@
     <!-- Build table of contents -->
     <xsl:template match="ead:archdesc" mode="toc">
         <div id="toc">
+            <!-- RBF add request button -->
+            <div id="requestlink">
+                <button type="request" class="btn request" onclick="window.location.href = 'https://aeon.lib.jmu.edu'">Request</button>
+            </div>
+            <!-- RBF changes end -->
+            
             <ul>
                 <xsl:if test="ead:did">
                     <li><a href="#{local:buildID(ead:did)}"><xsl:value-of select="local:tagName(ead:did)"/></a></li>
@@ -544,7 +575,19 @@
                 </xsl:otherwise>
             </xsl:choose>: 
         </dt>
-        <dd><xsl:apply-templates/></dd>
+        <dd>
+            <!-- RBF add id for Aeon -->
+            <xsl:choose>
+                <xsl:when test="self::ead:unittitle">
+                    <span id="Aeon_title">
+                        <xsl:apply-templates/>
+                    </span>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </dd>
     </xsl:template>
     
     <!-- Adds space between extents -->
@@ -559,7 +602,9 @@
                 <xsl:text>: </xsl:text>
             </dt>
             <dd>
-                <xsl:apply-templates/>
+                <span id="Aeon_creator">
+                    <xsl:apply-templates/>
+                </span>
             </dd>
         </xsl:if>
     </xsl:template>
@@ -572,7 +617,11 @@
                 <xsl:value-of select="local:tagName(.)"/>
                 <xsl:text>: </xsl:text>
             </dt>
-            <dd><xsl:apply-templates/></dd>
+            <dd>
+                <span id="Aeon_callnum">
+                    <xsl:apply-templates/>
+                </span>
+            </dd>
         </xsl:if>
     </xsl:template>
     

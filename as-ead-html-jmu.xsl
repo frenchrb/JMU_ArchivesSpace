@@ -546,9 +546,9 @@
         </dt>
         <dd><xsl:apply-templates/></dd>
     </xsl:template>
-    <!-- RBF remove -->
+    
     <!-- Adds space between extents -->
-    <!-- <xsl:template match="ead:extent"><xsl:apply-templates/><xsl:text> </xsl:text></xsl:template> -->
+    <xsl:template match="ead:extent"><xsl:apply-templates/><xsl:text> </xsl:text></xsl:template>
     
     <!-- RBF new template for archdesc/did/origination -->
     <xsl:template match="ead:origination" mode="overview">

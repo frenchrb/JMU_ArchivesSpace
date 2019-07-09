@@ -372,6 +372,10 @@
                                         <xsl:apply-templates select="child::*/ead:head"/>        
                                     </xsl:when>
                                     <xsl:otherwise>
+                                        <!-- RBF add ID -->
+                                        <xsl:apply-templates select="child::*/ead:unitid"/>
+                                        <xsl:text>: </xsl:text>
+                                        <!-- RBF changes end -->
                                         <xsl:apply-templates select="child::*/ead:unittitle"/>
                                     </xsl:otherwise>
                                 </xsl:choose>
@@ -386,6 +390,10 @@
                                             <xsl:apply-templates select="child::*/ead:head"/>        
                                         </xsl:when>
                                         <xsl:otherwise>
+                                            <!-- RBF add ID -->
+                                            <xsl:apply-templates select="child::*/ead:unitid"/>
+                                            <xsl:text>: </xsl:text>
+                                            <!-- RBF changes end -->
                                             <xsl:apply-templates select="child::*/ead:unittitle"/>
                                         </xsl:otherwise>
                                     </xsl:choose>
@@ -1260,7 +1268,14 @@
                     <tr class="item">
                         <td class="{$clevelMargin}" rowspan="{count(ead:did/ead:container[@label]) + 1}">
                             <xsl:apply-templates select="ead:did" mode="dsc"/>  
+                            <!-- RBF added to reorder elements in item description -->
+                            <xsl:apply-templates select="ead:scopecontent" mode="dsc"/>
+                            <xsl:apply-templates select="ead:accessrestrict" mode="dsc"/>
+                            <xsl:apply-templates select="ead:did/ead:physdesc" mode="dsc"/>
+                            <!-- RBF changes end -->
+                            <!-- RBF add scopecontent and accessrestrict criteria -->
                             <xsl:apply-templates mode="dsc" select="*[not(self::ead:did) and 
+                                not(self::ead:scopecontent) and not(self::ead:accessrestrict) and 
                                 not(self::ead:c) and not(self::ead:c02) and not(self::ead:c03) and
                                 not(self::ead:c04) and not(self::ead:c05) and not(self::ead:c06) and not(self::ead:c07)
                                 and not(self::ead:c08) and not(self::ead:c09) and not(self::ead:c10) and not(self::ead:c11) and not(self::ead:c12)]"/>          
@@ -1286,8 +1301,16 @@
                 <xsl:otherwise>
                     <tr class="item">
                         <td class="{$clevelMargin}" rowspan="{count(ead:did/ead:container[@label]) + 1}">
-                            <xsl:apply-templates select="ead:did" mode="dsc"/>  
+                            <!-- RBF if trying works, also probably need it here -->
+                            <xsl:apply-templates select="ead:did" mode="dsc"/>
+                            <!-- RBF added to reorder elements in item description -->
+                            <xsl:apply-templates select="ead:scopecontent" mode="dsc"/>
+                            <xsl:apply-templates select="ead:accessrestrict" mode="dsc"/>
+                            <xsl:apply-templates select="ead:did/ead:physdesc" mode="dsc"/>
+                            <!-- RBF changes end -->
+                            <!-- RBF add scopecontent and accessrestrict criteria -->
                             <xsl:apply-templates mode="dsc" select="*[not(self::ead:did) and 
+                                not(self::ead:scopecontent) and not(self::ead:accessrestrict) and 
                                 not(self::ead:c) and not(self::ead:c02) and not(self::ead:c03) and
                                 not(self::ead:c04) and not(self::ead:c05) and not(self::ead:c06) and not(self::ead:c07)
                                 and not(self::ead:c08) and not(self::ead:c09) and not(self::ead:c10) and not(self::ead:c11) and not(self::ead:c12)]"/>          
@@ -1383,8 +1406,9 @@
            </span> 
         <xsl:apply-templates select="ead:repository" mode="dsc"/>            
         <xsl:apply-templates select="ead:origination" mode="dsc"/>            
-        <xsl:apply-templates select="ead:unitdate" mode="dsc"/>            
-        <xsl:apply-templates select="ead:physdesc" mode="dsc"/>                    
+        <xsl:apply-templates select="ead:unitdate" mode="dsc"/>
+        <!-- RBF remove physdesc to change order of elements in container list -->
+        <!-- <xsl:apply-templates select="ead:physdesc" mode="dsc"/> -->                    
         <xsl:apply-templates select="ead:physloc" mode="dsc"/>             
         <xsl:apply-templates select="ead:dao" mode="dsc"/>            
         <xsl:apply-templates select="ead:daogrp" mode="dsc"/>            
@@ -1395,8 +1419,9 @@
     </xsl:template>
    
     <!-- Special formatting for elements in the collection inventory list -->
+    <!-- RBF removed ead:physdesc; created separate template -->
     <xsl:template match="ead:repository | ead:origination | ead:unitdate | ead:unitid  
-        | ead:physdesc | ead:physloc | ead:daogrp | ead:langmaterial | ead:materialspec | ead:container 
+        | ead:physloc | ead:daogrp | ead:langmaterial | ead:materialspec | ead:container 
         | ead:abstract | ead:note" mode="dsc">
         <xsl:if test="child::*">
             <p>
@@ -1427,7 +1452,27 @@
             </p>            
         </xsl:if>
     </xsl:template>
-    <xsl:template match="ead:relatedmaterial | ead:separatedmaterial | ead:accessrestrict | ead:userestrict |
+    
+    <!-- RBF new template for ead:physdesc mode="dsc" without label -->
+    <xsl:template match="ead:physdesc" mode="dsc">
+        <xsl:if test="child::*">
+            <p>
+                <xsl:apply-templates select="child::*[not(self::ead:head)]"/>
+            </p>            
+        </xsl:if>
+    </xsl:template>
+    
+    <!-- RBF new template for ead:scopecontent mode="dsc" without label -->
+    <xsl:template match="ead:scopecontent" mode="dsc">
+        <xsl:if test="child::*">
+            <p>
+                <xsl:apply-templates select="child::*[not(self::ead:head)]"/>
+            </p>            
+        </xsl:if>
+    </xsl:template>
+    
+    <!-- RBF removed ead:accessrestrict; created separate template -->
+    <xsl:template match="ead:relatedmaterial | ead:separatedmaterial | ead:userestrict |
         ead:custodhist | ead:accruals | ead:altformavail | ead:acqinfo |  
         ead:processinfo | ead:appraisal | ead:originalsloc" mode="dsc">
         <p>
@@ -1435,6 +1480,14 @@
                 <xsl:apply-templates select="child::*[not(self::ead:head)]"/>
         </p>
     </xsl:template>
+    
+    <!-- RBF new template for ead:accessrestrict without label -->
+    <xsl:template match="ead:accessrestrict" mode="dsc">
+        <p>
+            <xsl:apply-templates select="child::*[not(self::ead:head)]"/>
+        </p>
+    </xsl:template>
+    
     <xsl:template match="ead:index" mode="dsc">
         <xsl:apply-templates select="child::*[not(self::ead:indexentry)]"/>
             <ul>                
@@ -1449,7 +1502,8 @@
     </xsl:template>
     <xsl:template match="ead:dao" mode="dsc">
         <p>
-            <span class="dscHeaders"><xsl:value-of select="local:tagName(.)"/>:</span>
+            <!-- RBF remove "Digital Object" label -->
+            <!-- <span class="dscHeaders"><xsl:value-of select="local:tagName(.)"/>:</span> -->
             <a href="{@*:href}">
                 <xsl:if test="@*:title">
                     <xsl:attribute name="title"><xsl:value-of select="@*:title"/></xsl:attribute>
@@ -1468,6 +1522,7 @@
             </a>
         </p> 
     </xsl:template>
+    
     <!-- Formats all other children of the dsc -->
     <xsl:template mode="dsc" match="*">
         <xsl:if test="child::*">

@@ -1,0 +1,7 @@
+name: JMU_ArchivesSpace
+dependencies:
+  - python=3.6
+  - requests
+  - pip:
+    - pyinstaller==3.3.1
+  

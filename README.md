@@ -1,7 +1,25 @@
-* ASpace2MARCXML.xsl creates MARC record from EAD exported from ArchivesSpace
-* ASpace2VaHeritage.xsl modifies ArchivesSpace EAD for upload to Virginia Heritage
-* ASpace2HTML.xsl and ASpace2HTMLabstract.xsl create finding aid and abstract snippet for website. For finding aids with multiple container types, use ASpace2HTML-gencontainer.xsl instead.
+# Spaceport
+App to generate MARCXML, EAD for Virginia Heritage, and HTML for JMU Libraries website from ArchivesSpace EAD finding aids 
 
+## Requirements
+Created and tested with Python 3.6 and Saxon-HE 9.7. Requires requests. PyInstaller 3.3.1 used to create executable.
+
+To set up environment from file: ```conda env create –f=environment.yml```
+
+Requires a config file (local_settings.ini) in the same directory. Example of local_settings.ini:
+```
+[ArchivesSpace]
+baseURL:https://aspace.lib.jmu.edu/staff/api
+repository:4
+user:user
+password:pw
+
+[Saxon]
+saxon_path:SaxonHE9-7-0-6J\
+```
+
+## Usage
+The app can be run from the command line (with or without GUI) or the executable.
 To run Spaceport with GUI: ```python spaceportGUI.py```
 
 To run Spaceport from the command line: ```python spaceport.py input output```
@@ -18,7 +36,17 @@ Optional arguments:
   --retainexport  retain EAD exported from ArchivesSpace
 ```
 
+* ASpace2MARCXML.xsl creates MARC record from EAD exported from ArchivesSpace
+* ASpace2VaHeritage.xsl modifies ArchivesSpace EAD for upload to Virginia Heritage
+* HTML
+  * ASpace2HTMLabstract.xsl creates abstract snippet for website manuscript list.
+  * ASpace2HTML.xsl creates finding aid web page.
+  * For finding aids with multiple container types, use ASpace2HTML-gencontainer.xsl instead of ASpace2HTML.xsl.
 
+## Build
+```pyinstaller spaceportGUI.py --noconsole -F -n spaceport```
+## License
 These scripts are released under a CC-BY-NC 4.0 license.
 
-Created by Rebecca B. French
+## Contact
+Rebecca B. French - <https://github.com/frenchrb>

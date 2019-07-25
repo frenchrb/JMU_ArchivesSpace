@@ -42,8 +42,8 @@
                     <strong>Creator: </strong>
                     <span id="creator">
                         <xsl:choose>
-                            <xsl:when test="ead:archdesc/ead:did/ead:origination[@label='creator']">
-                                <xsl:for-each select="ead:archdesc/ead:did/ead:origination[@label='creator']">
+                            <xsl:when test="ead:archdesc/ead:did/ead:origination[@label='Creator']">
+                                <xsl:for-each select="ead:archdesc/ead:did/ead:origination[@label='Creator']">
                                     <xsl:value-of select="normalize-space(.)"/>
                                     <xsl:if test="not(position() = last())">
                                         <xsl:text>; </xsl:text>

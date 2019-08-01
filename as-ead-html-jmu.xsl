@@ -66,7 +66,7 @@
         <div id="toc">
             <!-- RBF add request button -->
             <div id="requestlink">
-                <button type="request" class="btn request" onclick="window.open('{$openurl}', '_blank')">Request</button>
+                <button type="request" class="btn request" onclick="window.open('{$openurl}', '_blank')">Request for use in Special Collections</button>
             </div>
             <!-- RBF changes end -->
             

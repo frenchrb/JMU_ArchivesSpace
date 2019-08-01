@@ -143,7 +143,7 @@ def html_multi(in_file, out_dir):
 
 
 def html_new(in_file, out_dir):
-    # Run as-ead-html.xsl
+    # Run as-ead-html-jmu.xsl
     source = out_dir / 'Aspace_EADs' / in_file
     out_file = out_dir / 'HTML_new' / in_file.with_suffix('.html')
     command = ['java', '-jar', config['Saxon']['saxon_path']+'saxon9he.jar', '-s:'+str(source.resolve()), '-xsl:as-ead-html-jmu.xsl', '-o:'+str(out_file.resolve())]
@@ -174,7 +174,7 @@ def main(arglist):
     parser.add_argument('--marcxml', help='run ASpace2MARCXML.xsl', action='store_true')
     parser.add_argument('--html', help='run ASpace2HTML.xsl', action='store_true')
     parser.add_argument('--htmlmulti', help='run ASpace2HTML-gencontainer.xsl (multiple container types)', action='store_true')
-    parser.add_argument('--htmlnew', help='run as-ead-html.xsl', action='store_true')
+    parser.add_argument('--htmlnew', help='run as-ead-html-jmu.xsl', action='store_true')
     parser.add_argument('--htmlabs', help='run ASpace2HTMLabstract.xsl', action='store_true')
     parser.add_argument('--retainexport', help='retain EAD exported from ArchivesSpace', action='store_true')
     args = parser.parse_args(arglist)

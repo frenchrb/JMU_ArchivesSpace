@@ -33,7 +33,7 @@
     </xsl:function>
     <!-- 
         A local function to name all child elements with no head tag. 
-        Tag names addapted from EAD tag library (http://www.loc.gov/ead/tglib/element_index.html)
+        Tag names adapted from EAD tag library (http://www.loc.gov/ead/tglib/element_index.html)
     -->
     <xsl:function name="local:tagName">
         <!-- element node as parameter -->

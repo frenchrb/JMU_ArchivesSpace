@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
-    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     xmlns:xlink="http://www.w3.org/1999/xlink" 
     xmlns:ns2="http://www.w3.org/1999/xlink" 
     xmlns:local="http://www.yoursite.org/namespace" 
     xmlns:ead="urn:isbn:1-931666-22-9" version="2.0"  exclude-result-prefixes="#all">
+    
     <!--
         *******************************************************************
         *                                                                 *
@@ -20,283 +21,44 @@
         *                   EAD xml files exported from the               *
         *                   ArchivesSpace web application.                *
         *                                                                 *
-        *                   Modified 2019-07-01 by Rebecca B. French      *
+        *                   Modified 2019-07-23 by Rebecca B. French      *
         *******************************************************************
     -->
-    <xsl:output indent="yes" method="xml" 
-        doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"  
-        doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
+    
+    <xsl:output indent="yes" method="html"
         exclude-result-prefixes="#all"
         omit-xml-declaration="yes"
         encoding="utf-8"/>
     
     <xsl:strip-space elements="*"/>
     <!-- Calls a stylesheet with local functions and lists for languages and subject authorities -->
-    <xsl:include href="as-helper-functions-jmu.xsl"/>   
+    <xsl:include href="as-helper-functions-jmu.xsl"/>
     
-    <!-- HTML metadata tags -->
-    <xsl:template name="metadata">
-        <meta http-equiv="Content-Type" name="dc.title" content="{/ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper}"/>
-        <meta http-equiv="Content-Type" name="dc.author" content="{/ead:ead/ead:archdesc/ead:did/ead:origination}" />
-        <xsl:for-each select="/ead:ead/ead:archdesc/ead:controlaccess/descendant::*">
-            <meta http-equiv="Content-Type" name="dc.subject" content="{.}" />
+    <!-- RBF variable to construct openURL for Aeon request link -->
+    <xsl:variable name="openurl">
+        <xsl:text>https://aeon.lib.jmu.edu/remoteauth/aeon.dll/OpenURL?title=</xsl:text>
+        <xsl:value-of select="replace(replace(ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text(), 'A Guide to the ', ''), ' ', '%20')"/>
+        <xsl:text>&amp;author=</xsl:text>
+        <xsl:for-each select="ead:ead/ead:archdesc/ead:did/ead:origination[not(@label='source')]">
+            <xsl:value-of select="replace(., ' ', '%20')"/>
+            <xsl:if test="not(position()=last())">
+                <xsl:text>;%20</xsl:text>
+            </xsl:if>
         </xsl:for-each>
-        <meta http-equiv="Content-Type" name="dc.type" content="text" />
-        <meta http-equiv="Content-Type" name="dc.format" content="manuscripts" />
-        <meta http-equiv="Content-Type" name="dc.format" content="finding aids" />
-    </xsl:template>
-    
-    <!-- CSS styles -->
-    <xsl:template name="css">
-        <style type="text/css">
-            /*
-                Style Guide
-                font-family: Verdana, Arial, Helvetica, sans-serif;
-                font color: #333
-                font color (menu, links): #14a6dc
-                background color (body, h2):  #f0f0f0
-                background color (main div): #f9f9f9
-                borders: #e1e1e8
-            */
-            html {
-                margin: 0;
-                padding: 0; 
-            }
-            body{
-                color: #333;
-                font-size: 100%;
-                font-family: Verdana, Arial, Helvetica, sans-serif;
-                background-color: #f0f0f0;
-           }
-            
-            /* layout */
-            #main {
-                font-size: .87em;
-                background-color: #f9f9f9;
-                border:1px solid #e1e1e8;
-                margin: 1em;
-                padding: 1em;
-                clear:both;
-            }
-            /* header*/
-            #header {margin-left:1em;}
-            
-            /*Fixed position table of contents*/
-            #toc {
-                margin: 0;
-                padding: 1.25em 1em;
-                font-size: .85em;
-                width: 20%;
-                float:left;
-                clear:left;
-                position:fixed;
-                max-height: 600px;
-                overflow:scroll;
-                
-            }
-            #toc ul {
-                background-color: #ffffff;
-                border:1px solid #e1e1e8;
-                margin:0; 
-                padding:0; 
-            }   
-            #toc li { 
-                list-style: none;
-                border-bottom: 1px solid #e1e1e8;
-                overflow:hidden;
-                margin-left: 1em;
-            }
-            #toc a, .top a{
-                color:#14a6dc;
-                display:block;
-                /*height:25px;*/
-                line-height: 2em;                   
-                text-decoration:none;
-            }
-            #toc ul li a:hover, #toc ul li .current {background:#f9f9f9;}
-            #toc li.submenu {margin-left: 1.75em;}
-            #toc li.submenu2 {margin-left: 2.5em;}
-            
-            /* Main content div*/
-            #content {
-                border:1px solid #e1e1e8;
-                background-color: #ffffff;
-                margin: 1em 0 0 25%;
-                padding: 0;
-            }
-            
-            .section {
-                background-color: #fafafa;
-                border:1px solid #e1e1e8;
-                margin:1em;
-                padding:0;
-            }
-            .sectionContent {
-                border:1px solid #e1e1e8;
-                background-color: #ffffff;
-                margin:.5em;
-                padding:.25em .5em;
-            }
-            
-            dl.summary {
-                width:100%;
-                overflow:hidden;
-                clear:both;
-            }
-            dl.summary dt {
-                float:left;
-                width:25%; 
-                text-align:right;
-                clear:left;
-            }
-            dl.summary dd {
-                margin-left: 30%;
-                width:70%;
-                clear:right;
-            }
-            
-            /* typography */
-            #header h1 {
-                font-size: 1.75em;
-                margin-bottom:0;
-                padding-bottom:0;
-            }
-            #header h2 {
-                background-color:#ffffff; 
-                margin:0; 
-                padding:0;
-                border:none;
-            }
-            h2 {
-                font-size: 1.25em;
-                font-weight: 500;
-                margin: 0;
-                padding: .25em 1em;
-                background-color: #f0f0f0;
-                border-bottom: 1px solid #e1e1e8;
-            }
-            h3 {
-                font-size: 1em;
-                font-weight: 500;
-                margin: 0;
-                padding: .25em 1em;
-                background-color: #f0f0f0;
-                border-bottom: 1px solid #e1e1e8;
-            }
-            h4 {
-                font-weight:600;
-                color:#666666;
-                margin: 0;
-            }
-            
-            dt {}
-            dd {margin-bottom:1em;}
-            .block {display:block;}
-            .list {margin:.5em; padding-left:.5em;}
-            
-            /* Table styles */
-            table {width: 98%; margin:1em 2em; background-color:#f0f0f0;}
-            td {background-color:#ffffff; padding:.25em .75em; vertical-align:top;}
-            .thead td {background-color:#f0f0f0;}
-            .tlist {width: 50%;}
-            .even td{background-color:#f7f7f9;}
-            
-            /* List styles */
-            .simple{list-style-type: none;}
-            .arabic {list-style-type: decimal}
-            .upperalpha{list-style-type: upper-alpha}
-            .loweralpha{list-style-type: lower-alpha}
-            .upperroman{list-style-type: upper-roman}
-            .lowerroman{list-style-type: lower-roman}
-            
-            /* Render styles */
-            .smcaps {font-variant: small-caps;}
-            .underline {text-decoration: underline;}
-            .strong {font-weight: 600;}
-            
-            /* Address line */
-            .addressLine {display:block;}
-            
-            /* publication statement*/
-            .publication {display:block; float: right; margin-right:2em; font-size:.75em;}
-            
-            /* Collection Inventory */
-            table.dsc {text-align:left; margin:.5em; padding:0; font-size: .85em;}
-            .dsc th {text-align:left; padding:.5em; font-weight:normal;  border-top: 2px solid #ccc; border-bottom:1px dotted #ccc; vertical-align:top;}
-            .headers th {background-color:#f7f7f9; font-weight:bold; border-top: none; vertical-align:top;}
-            .dsc dt {}
-            .dsc dd {margin-bottom:.5em;}
-            .dsc h3 {font-weight:bold; border:none; padding:0;}
-            .dsc .didTitle {display:block;}
-            .dscSeries {margin-left:.5em;}
-            .dscSeries p {margin: 0 .5em .5em;}
-            table.dsc td p {margin: 0 .5em .5em}
-            /*.dscHeaders {text-decoration: underline;}*/
-            
-            /*--- Clevel Margins ---*/
-            table td.c{padding-left: 0;}
-            table td.c01{padding-left: 0;}
-            table td.c02{padding-left: 1em;}                
-            table td.c03{padding-left: 2em;}
-            table td.c04{padding-left: 3em;}
-            table td.c05{padding-left: 4em;}
-            table td.c06{padding-left: 5em;}
-            table td.c07{padding-left: 6em;}
-            table td.c08{padding-left: 7em;}
-            table td.c09{padding-left: 8em;}
-            table td.c10{padding-left: 9em;}
-            table td.c11{padding-left: 10em;}
-            table td.c12{padding-left: 11em;}
-            
-            /*--- RBF Request button styles ---*/
-            #requestlink {
-                text-align: center;
-                padding: 2em 1em;
-            }
-            .btn {
-                background-color: #14a6dc;
-                color: white;
-                border: 1px solid #14a6dc;
-                font-size: 1.25em;
-                font-weight: 500;
-                margin: 0;
-                padding: .5em 1.25em;
-                text-align: center;
-                display: inline-block;
-                border-radius: 8px;
-                cursor: pointer;
-            }
-            .btn:hover {
-                background-color: white;
-                color: #14a6dc;
-                border: 1px solid #e1e1e8;
-            }
-             
-        </style>
-    </xsl:template>
+        <xsl:text>&amp;callnumber=</xsl:text>
+        <xsl:value-of select="replace(ead:ead/ead:archdesc/ead:did/ead:unitid[not(@audience='internal')], ' ', '%20')"/>
+    </xsl:variable>
     
     <!-- Named template for a generic p element with a link back to the the top of the page  -->
     <xsl:template name="top">
         <p class="top"><a href="#main"><strong>^</strong> Top</a></p>
     </xsl:template>
     
-    <!-- Build html page -->
     <xsl:template match="/">
-        <html xmlns="http://www.w3.org/1999/xhtml">
-            <head>
-                <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-                <title><xsl:value-of select="concat(ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper[1],' ',ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:subtitle)"/></title>
-                <xsl:call-template name="metadata"/>
-                <xsl:call-template name="css"/>
-            </head>
-            <body>
-                <!--<div class="publication"><xsl:apply-templates select="ead:ead/ead:eadheader/ead:filedesc/ead:publicationstmt/ead:publisher"/></div>-->
-                <div id="main">
-                    <xsl:apply-templates select="ead:ead/ead:archdesc" mode="toc"/>
-                    <xsl:apply-templates select="ead:ead/ead:archdesc"/>
-                </div>
-            </body>
-        </html>
+        <div id="content" class="full">
+            <xsl:apply-templates select="ead:ead/ead:archdesc" mode="toc"/>
+            <xsl:apply-templates select="ead:ead/ead:archdesc"/> 
+        </div>
     </xsl:template>
     
     <!-- Build table of contents -->
@@ -304,7 +66,7 @@
         <div id="toc">
             <!-- RBF add request button -->
             <div id="requestlink">
-                <button type="request" class="btn request" onclick="window.location.href = 'https://aeon.lib.jmu.edu'">Request</button>
+                <button type="request" class="btn request" onclick="window.open('{$openurl}', '_blank')">Request</button>
             </div>
             <!-- RBF changes end -->
             
@@ -412,8 +174,9 @@
     -->
     <!-- Calls and organizes children of the archdesc -->
     <xsl:template match="ead:archdesc">  
-        <div id="content">
-            <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt"/>
+        <div id="archdesc">
+            <!-- RBF remove title -->
+            <!-- <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt"/> -->
             <xsl:apply-templates select="ead:did"/>
             <xsl:apply-templates select="ead:bioghist"/>
             <xsl:apply-templates select="ead:scopecontent"/>
@@ -907,7 +670,7 @@
         <dd><xsl:apply-templates select="ead:item"/></dd>
     </xsl:template>
     
-    <!-- Formats list as tabel if list has listhead element  -->         
+    <!-- Formats list as table if list has listhead element  -->         
     <xsl:template match="ead:defitem" mode="listTable">
         <tr>
             <td><xsl:apply-templates select="ead:label"/></td>
@@ -1266,7 +1029,8 @@
                 </xsl:when>
                 <xsl:when test="ead:did/ead:container[@label]">
                     <tr class="item">
-                        <td class="{$clevelMargin}" rowspan="{count(ead:did/ead:container[@label]) + 1}">
+                        <td class="{$clevelMargin}">
+                        <!--<td class="{$clevelMargin}" rowspan="{count(ead:did/ead:container[@label]) + 1}">-->
                             <xsl:apply-templates select="ead:did" mode="dsc"/>  
                             <!-- RBF added to reorder elements in item description -->
                             <xsl:apply-templates select="ead:scopecontent" mode="dsc"/>
@@ -1280,10 +1044,10 @@
                                 not(self::ead:c04) and not(self::ead:c05) and not(self::ead:c06) and not(self::ead:c07)
                                 and not(self::ead:c08) and not(self::ead:c09) and not(self::ead:c10) and not(self::ead:c11) and not(self::ead:c12)]"/>          
                         </td>
-                    </tr>
+                        <!--</tr>-->
                     <!-- Groups instances by label attribute, the way they are grouped in ArchivesSpace -->
                     <xsl:for-each-group select="ead:did/ead:container" group-starting-with="@label">
-                        <tr>
+                        <!--<tr>-->
                             <xsl:apply-templates select="current-group()" />
                             <xsl:choose>
                                 <xsl:when test="count(current-group()) &lt; 2">
@@ -1294,8 +1058,9 @@
                                     <td><span class="containerType"/></td>
                                 </xsl:when>
                             </xsl:choose>
-                        </tr>
+                        <!--</tr>-->
                     </xsl:for-each-group>
+                    </tr>
                 </xsl:when>
                <!-- For finding aids with no @label attribute, only accounts for three containers -->
                 <xsl:otherwise>
@@ -1528,5 +1293,5 @@
         <xsl:if test="child::*">
             <xsl:apply-templates/>
         </xsl:if>
-    </xsl:template>
+    </xsl:template>    
 </xsl:stylesheet>

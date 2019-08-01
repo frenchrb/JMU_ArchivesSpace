@@ -32,6 +32,7 @@ Optional arguments:
   --marcxml       run ASpace2MARCXML.xsl
   --html          run ASpace2HTML.xsl
   --htmlmulti     run ASpace2HTML-gencontainer.xsl (multiple container types)
+  --htmlnew       run as-ead-html-jmu.xsl (new design)
   --htmlabs       run ASpace2HTMLabstract.xsl
   --retainexport  retain EAD exported from ArchivesSpace
 ```
@@ -40,8 +41,9 @@ Optional arguments:
 * ASpace2VaHeritage.xsl modifies ArchivesSpace EAD for upload to Virginia Heritage
 * HTML
   * ASpace2HTMLabstract.xsl creates abstract snippet for website manuscript list.
-  * ASpace2HTML.xsl creates finding aid web page.
-  * For finding aids with multiple container types, use ASpace2HTML-gencontainer.xsl instead of ASpace2HTML.xsl.
+  * ASpace2HTML.xsl creates finding aid web page (old design)
+  * For finding aids with multiple container types (old design), use ASpace2HTML-gencontainer.xsl instead of ASpace2HTML.xsl.
+  * as-ead-html-jmu.xsl creates finding aid web page (new design)
 
 ## Build
 ```pyinstaller spaceportGUI.py --noconsole -F -n spaceport```

@@ -36,7 +36,7 @@
     
     <!-- RBF variable to construct openURL for Aeon request link -->
     <xsl:variable name="openurl">
-        <xsl:text>https://aeon.lib.jmu.edu/remoteauth/aeon.dll/OpenURL?title=</xsl:text>
+        <xsl:text>https://aeon.lib.jmu.edu/logon?Action=10&amp;Form=30&amp;genre=manuscript&amp;title=</xsl:text>
         <xsl:value-of select="replace(replace(ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text(), 'A Guide to the ', ''), ' ', '%20')"/>
         <xsl:text>&amp;author=</xsl:text>
         <xsl:for-each select="ead:ead/ead:archdesc/ead:did/ead:origination[not(@label='source')]">
@@ -55,7 +55,7 @@
     </xsl:template>
     
     <xsl:template match="/">
-        <div id="content" class="full">
+        <div id="content" class="full ascontent">
             <xsl:apply-templates select="ead:ead/ead:archdesc" mode="toc"/>
             <xsl:apply-templates select="ead:ead/ead:archdesc"/> 
         </div>
@@ -429,8 +429,12 @@
             </dt>
             <dd>
                 <xsl:for-each select="./ead:extent[@altrender]/..">
-                    <xsl:value-of select="./ead:extent[@altrender='carrier']/text()"/>
-                    <xsl:text>, </xsl:text>
+                    <xsl:if test="./ead:extent[@altrender='carrier']">
+                        <xsl:value-of select="./ead:extent[@altrender='carrier']/text()"/>
+                        <xsl:if test="./ead:extent[not(@altrender='carrier')]">
+                            <xsl:text>, </xsl:text>
+                        </xsl:if>
+                    </xsl:if>
                     <xsl:for-each select="./ead:extent[not(@altrender='carrier')]">
                         <xsl:value-of select="./text()"/>
                         <xsl:if test="not(position()=last())">

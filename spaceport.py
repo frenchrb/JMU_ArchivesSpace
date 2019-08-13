@@ -17,7 +17,11 @@ config.read('local_settings.ini')
 
 
 def run_subprocess(command):
-    process = Popen(command, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    # prevent console window from appearing when run from noconsole exe
+    startupinfo = subprocess.STARTUPINFO()
+    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    
+    process = Popen(command, stdin=PIPE, stdout=PIPE, stderr=PIPE, startupinfo=startupinfo)
     try:
         out, err = process.communicate(timeout=15) # timeout time in seconds
     except TimeoutExpired:

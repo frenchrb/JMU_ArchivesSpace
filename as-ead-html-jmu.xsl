@@ -5,7 +5,9 @@
     xmlns:xlink="http://www.w3.org/1999/xlink" 
     xmlns:ns2="http://www.w3.org/1999/xlink" 
     xmlns:local="http://www.yoursite.org/namespace" 
-    xmlns:ead="urn:isbn:1-931666-22-9" version="2.0"  exclude-result-prefixes="#all">
+    xmlns:ead="urn:isbn:1-931666-22-9"
+    xmlns:functx="http://www.functx.com"
+    version="2.0"  exclude-result-prefixes="#all">
     
     <!--
         *******************************************************************
@@ -34,13 +36,44 @@
     <!-- Calls a stylesheet with local functions and lists for languages and subject authorities -->
     <xsl:include href="as-helper-functions-jmu.xsl"/>
     
+    <!-- RBF Replacement functions for OpenURL -->
+    <xsl:variable name="fr" select="('A Guide to the ', 'A Guide to ', '&amp;', '&quot;', ' ')"/>
+    <xsl:variable name="to" select="('', '', '%26', '%22', '%20')"/>
+    <xsl:function name="functx:replace-multi" as="xs:string?"
+        xmlns:functx="http://www.functx.com">
+        <xsl:param name="arg" as="xs:string?"/>
+        <xsl:param name="changeFrom" as="xs:string*"/>
+        <xsl:param name="changeTo" as="xs:string*"/>
+        
+        <xsl:sequence select="
+            if (count($changeFrom) > 0)
+            then functx:replace-multi(
+            replace($arg, $changeFrom[1],
+            functx:if-absent($changeTo[1],'')),
+            $changeFrom[position() > 1],
+            $changeTo[position() > 1])
+            else $arg
+            "/>
+    </xsl:function>
+    <xsl:function name="functx:if-absent" as="item()*"
+        xmlns:functx="http://www.functx.com">
+        <xsl:param name="arg" as="item()*"/>
+        <xsl:param name="value" as="item()*"/>
+        
+        <xsl:sequence select="
+            if (exists($arg))
+            then $arg
+            else $value
+            "/>
+    </xsl:function>
+    
     <!-- RBF variable to construct openURL for Aeon request link -->
     <xsl:variable name="openurl">
         <xsl:text>https://aeon.lib.jmu.edu/logon?Action=10&amp;Form=30&amp;genre=manuscript&amp;title=</xsl:text>
-        <xsl:value-of select="replace(replace(ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text(), 'A Guide to the ', ''), ' ', '%20')"/>
+        <xsl:value-of select='functx:replace-multi(replace(normalize-space(ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text()), "&apos;", "%27"), $fr, $to)'/>
         <xsl:text>&amp;author=</xsl:text>
         <xsl:for-each select="ead:ead/ead:archdesc/ead:did/ead:origination[not(@label='source')]">
-            <xsl:value-of select="replace(., ' ', '%20')"/>
+            <xsl:value-of select='functx:replace-multi(replace(normalize-space(.), "&apos;", "%27"), $fr, $to)'/>
             <xsl:if test="not(position()=last())">
                 <xsl:text>;%20</xsl:text>
             </xsl:if>
@@ -250,7 +283,7 @@
             <h2 id="{local:buildID(.)}">Summary Information</h2>
             <div class="sectionContent">
                 <!-- 
-                    Determines the order in wich elements from the archdesc did appear, 
+                    Determines the order in which elements from the archdesc did appear, 
                     to change the order of appearance for the children of did
                     by changing the order of the following statements.
                 -->
@@ -268,7 +301,7 @@
                             <xsl:text>: </xsl:text>
                         </dt>
                         <dd>
-                            <xsl:for-each select="./ead:unitdate[@type='inclusive']">
+                            <xsl:for-each select="./ead:unitdate[not(@type='bulk')]">
                                 <xsl:value-of select="."/>
                                 <xsl:if test="not(position()=last())">
                                     <xsl:text>, </xsl:text>

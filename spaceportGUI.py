@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 
+import multiprocessing as mp
+import multiprocessing.queues as mpq
 import os
 from pathlib import Path
+from threading import Thread
 from tkinter import *
 from tkinter import filedialog
 from tkinter import ttk
@@ -22,6 +25,26 @@ class NewStdOut():
     
     def flush(self):
         self.oldStdOut.flush()
+
+
+class StdOutQueue(mpq.Queue):
+    def __init__(self, *args, **kwargs):
+        ctx = mp.get_context()
+        super(StdOutQueue, self).__init__(*args, **kwargs, ctx=ctx)
+    
+    def write(self, msg):
+        self.put(msg)
+    
+    def flush(self):
+        sys.__stdout__.flush()
+        sys.__stderr__.flush()
+
+
+def text_writer(text_area, queue):
+    while True:
+        text_area.insert(END, queue.get())
+        text_area.see(END)
+        text_area.update_idletasks()
 
 
 def open():
@@ -57,7 +80,9 @@ def run():
     if c7var.get() == 1:
         args.append('--htmlnew')
     #print(args)
-    spaceport.main(args)
+    t = Thread(target=spaceport.main, args=(args,), daemon=True)
+    # t.daemon = True
+    t.start()
 
 
 def generate_list():
@@ -66,7 +91,9 @@ def generate_list():
     args.append(savepath)
     if r1var.get():
         args.append('--published')
-    generate_coll_list.main(args)
+    t = Thread(target=generate_coll_list.main, args=(args,), daemon=True)
+    # t.daemon = True
+    t.start()
 
 
 def main():
@@ -149,12 +176,13 @@ def main():
     text_area.config(yscrollcommand=scrollbar.set)
     scrollbar.config(command=text_area.yview)
     scrollbar.grid(row=0, column=3, rowspan=20, sticky='NS')
-
-    save_stdout = sys.stdout
-    sys.stdout = NewStdOut(save_stdout, text_area)
     
-    save_stderr = sys.stderr
-    sys.stderr = NewStdOut(save_stderr, text_area)
+    q = StdOutQueue()
+    monitor = Thread(target=text_writer, args=(text_area, q), daemon=True)
+    # monitor.daemon = True
+    monitor.start()
+    sys.stdout = q
+    sys.stderr = q
     
     root.mainloop()
 

@@ -192,34 +192,38 @@ def main(arglist):
     out_dir = save_dir / ('Output_' + date_time)
     Path.mkdir(out_dir) #should first check if exists
     
+    # Do EAD exports
     sc_vihart = {}
     sc_vihart = export_ead(coll_list, out_dir, sc_vihart)
     #print(sc_vihart)
     print()
     
-    with open(coll_list) as f:
-        for line in f:
-            filename = Path(line.replace(' ', '').rstrip()).with_suffix('.xml')
-            if filename.name in os.listdir(out_dir / 'Aspace_EADs'):
-                if args.vaheritage or args.marcxml or args.html or args.htmlnew or args.htmlabs or args.retainexport == False:
-                    print(filename)
-                if args.vaheritage:
-                    print('    ' + vaheritage(filename, out_dir, sc_vihart))
-                if args.marcxml:
-                    print('    ' + marcxml(filename, out_dir))
-                if args.html:
-                    print('    ' + html(filename, out_dir))
-                if args.htmlmulti:
-                    print('    ' + html_multi(filename, out_dir))
-                if args.htmlnew:
-                    print('    ' + html_new(filename, out_dir))
-                if args.htmlabs:
-                    print('    ' + html_abstract(filename, out_dir))
-                if args.retainexport == False:
-                    print('    ' + cleanup(out_dir / 'Aspace_EADs' / filename))
-                print()
-    print('Transformations complete')
-    print()
+    # Do transformations
+    if args.vaheritage or args.marcxml or args.html or args.htmlmulti or args.htmlnew or args.htmlabs or args.retainexport == False:
+        print('Transforming files...')
+        with open(coll_list) as f:
+            for line in f:
+                filename = Path(line.replace(' ', '').rstrip()).with_suffix('.xml')
+                if filename.name in os.listdir(out_dir / 'Aspace_EADs'):
+                    if args.vaheritage or args.marcxml or args.html or args.htmlmulti or args.htmlnew or args.htmlabs or args.retainexport == False:
+                        print(filename)
+                    if args.vaheritage:
+                        print('    ' + vaheritage(filename, out_dir, sc_vihart))
+                    if args.marcxml:
+                        print('    ' + marcxml(filename, out_dir))
+                    if args.html:
+                        print('    ' + html(filename, out_dir))
+                    if args.htmlmulti:
+                        print('    ' + html_multi(filename, out_dir))
+                    if args.htmlnew:
+                        print('    ' + html_new(filename, out_dir))
+                    if args.htmlabs:
+                        print('    ' + html_abstract(filename, out_dir))
+                    if args.retainexport == False:
+                        print('    ' + cleanup(out_dir / 'Aspace_EADs' / filename))
+                    print()
+        print('Transformations complete')
+        print()
     
 if __name__ == '__main__':
     #print(parser.parse_args(sys.argv[1:]))

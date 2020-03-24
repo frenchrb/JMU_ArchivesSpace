@@ -231,7 +231,7 @@
                 </marc:datafield>
             </xsl:for-each>
             
-            <marc:datafield tag="856" ind1="4" ind2="0">
+            <marc:datafield tag="856" ind1="4" ind2="2">
                 <marc:subfield code="z">Finding aid for this collection</marc:subfield>
                 <marc:subfield code="u">URL</marc:subfield>
             </marc:datafield>          

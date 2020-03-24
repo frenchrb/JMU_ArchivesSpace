@@ -99,6 +99,7 @@ def generate_list():
 def main():
     root = Tk()
     root.wm_title('Spaceport')
+    root.iconbitmap('images/spaceport_icon.ico')
     
     # Left panel
     left_frame = Frame(root)

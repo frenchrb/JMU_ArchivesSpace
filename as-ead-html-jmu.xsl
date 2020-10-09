@@ -545,10 +545,13 @@
         <div class="section">
         <h3 id="{local:buildID(.)}"><xsl:value-of select="local:tagName(.)"/></h3>
             <div class="sectionContent">
-                <p>
-                    <xsl:if test="ead:change/ead:item"><xsl:apply-templates select="ead:change/ead:item"/></xsl:if>
-                    <xsl:if test="ead:change/ead:date"><xsl:text> </xsl:text><xsl:apply-templates select="ead:change/ead:date"/></xsl:if>
-                </p>
+                <xsl:for-each select="ead:change">
+                   <p>
+                    <xsl:if test="./ead:item"><xsl:apply-templates select="./ead:item"/></xsl:if>
+                    <xsl:if test="./ead:date"><xsl:text> </xsl:text><xsl:apply-templates select="./ead:date"/></xsl:if>
+                </p> 
+                </xsl:for-each>
+                
             </div>
         </div>
     </xsl:template>
@@ -1204,7 +1207,7 @@
            <span class="didTitle">
                <xsl:apply-templates select="ead:unittitle"/>
                <xsl:if test="(string-length(ead:unittitle[1]) &gt; 1) and (string-length(ead:unitdate[1]) &gt; 1)">, </xsl:if>
-               <xsl:apply-templates select="ead:unitdate" mode="did"/>   
+               <xsl:apply-templates select="ead:unitdate" mode="did"/>
            </span> 
         <xsl:apply-templates select="ead:repository" mode="dsc"/>            
         <xsl:apply-templates select="ead:origination" mode="dsc"/>            
@@ -1273,8 +1276,8 @@
         </xsl:if>
     </xsl:template>
     
-    <!-- RBF removed ead:accessrestrict; created separate template -->
-    <xsl:template match="ead:relatedmaterial | ead:separatedmaterial | ead:userestrict |
+    <!-- RBF removed ead:accessrestrict and ead:userestrict; created separate templates -->
+    <xsl:template match="ead:relatedmaterial | ead:separatedmaterial | 
         ead:custodhist | ead:accruals | ead:altformavail | ead:acqinfo |  
         ead:processinfo | ead:appraisal | ead:originalsloc" mode="dsc">
         <p>
@@ -1287,6 +1290,17 @@
     <xsl:template match="ead:accessrestrict" mode="dsc">
         <p>
             <xsl:apply-templates select="child::*[not(self::ead:head)]"/>
+        </p>
+    </xsl:template>
+    
+    <!-- RBF new template for ead:userestrict -->
+    <xsl:template match="ead:userestrict" mode="dsc">
+        <p>
+            <span class="dscHeaders"><xsl:value-of select="local:tagName(.)"/>: </span>
+            <xsl:for-each select="child::*[not(self::ead:head)]">
+                <xsl:value-of select="./text()"/>
+                <xsl:if test="not(position()=last())"><br/></xsl:if>
+            </xsl:for-each>
         </p>
     </xsl:template>
     

@@ -2,7 +2,7 @@
 App to generate MARCXML, EAD for Virginia Heritage, and HTML for JMU Libraries website from ArchivesSpace EAD finding aids 
 
 ## Requirements
-Created and tested with Python 3.6 and Saxon-HE 9.7. Requires requests. PyInstaller 3.3.1 used to create executable.
+Created and tested with Python 3.6 and Saxon-HE 9.7. Requires requests and ArchivesSnake. PyInstaller 3.3.1 used to create executable.
 
 To set up environment from file: ```conda env create –f=environment.yml```
 
@@ -47,6 +47,7 @@ Optional arguments:
 
 ## Build
 ```pyinstaller spaceportGUI.py --noconsole -F -n spaceport```
+
 ## License
 These scripts are released under a CC-BY-NC 4.0 license.
 

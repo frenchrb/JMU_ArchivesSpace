@@ -204,6 +204,10 @@
                     </xsl:for-each>
                 </marc:subfield>
             </marc:datafield>
+            <marc:datafield tag="555" ind1="0" ind2=" ">
+                <marc:subfield code="a">View detailed inventory and request for use in Special Collections:</marc:subfield>
+                <marc:subfield code="u">URL</marc:subfield>
+            </marc:datafield>
             
             <xsl:for-each select="ead:archdesc/ead:controlaccess/ead:subject[@source='lcsh']">
                 <marc:datafield tag="6XX" ind1=" " ind2="0">

@@ -174,11 +174,13 @@
                 </marc:subfield>
             </marc:datafield>
             
-            <marc:datafield tag="506" ind1=" " ind2=" ">
-                <marc:subfield code="a">
-                    <xsl:value-of select="normalize-space(ead:archdesc/ead:accessrestrict/ead:p)"/>
-                </marc:subfield>
-            </marc:datafield>
+            <xsl:for-each select="ead:archdesc/ead:accessrestrict/ead:p">
+                <marc:datafield tag="506" ind1=" " ind2=" ">
+                    <marc:subfield code="a">
+                        <xsl:value-of select="normalize-space(.)"/>
+                    </marc:subfield>
+                </marc:datafield>
+            </xsl:for-each>
             <marc:datafield tag="520" ind1=" " ind2=" ">
                 <marc:subfield code="a">
                     <xsl:value-of select="normalize-space(ead:archdesc/ead:did/ead:abstract)"/>

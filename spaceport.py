@@ -46,7 +46,7 @@ def export_ead(list, out_dir, id_dict):
     session = auth['session']
     
     headers = {'X-ArchivesSpace-Session':session}
-    export_options = '?numbered_cs=true&include_daos=true&include_unpublished=true'
+    export_options = '?numbered_cs=true&include_daos=true&include_unpublished=false'
     
     destination = out_dir / 'Aspace_EADs'
     Path.mkdir(destination)

@@ -210,6 +210,11 @@
                 <marc:subfield code="a">View detailed inventory and request for use in Special Collections:</marc:subfield>
                 <marc:subfield code="u">URL</marc:subfield>
             </marc:datafield>
+            <marc:datafield tag="561" ind1=" " ind2=" ">
+                <marc:subfield code="a">
+                    <xsl:value-of select="normalize-space(ead:archdesc/ead:custodhist/ead:p)"/>
+                </marc:subfield>
+            </marc:datafield>
             
             <xsl:for-each select="ead:archdesc/ead:controlaccess/ead:subject[@source='lcsh']">
                 <marc:datafield tag="6XX" ind1=" " ind2="0">

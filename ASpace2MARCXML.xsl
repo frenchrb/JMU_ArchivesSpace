@@ -212,7 +212,12 @@
             </marc:datafield>
             <marc:datafield tag="561" ind1=" " ind2=" ">
                 <marc:subfield code="a">
-                    <xsl:value-of select="normalize-space(ead:archdesc/ead:custodhist/ead:p)"/>
+                    <xsl:for-each select="ead:archdesc/ead:custodhist/ead:p">
+                        <xsl:value-of select="normalize-space(.)"/>
+                        <xsl:if test="not(position() = last())">
+                            <xsl:text> </xsl:text>
+                        </xsl:if>
+                    </xsl:for-each>
                 </marc:subfield>
             </marc:datafield>
             

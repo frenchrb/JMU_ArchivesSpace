@@ -174,6 +174,47 @@
                 </marc:subfield>
             </marc:datafield>
             
+            <!-- Add contents note for oral history collections -->
+            <xsl:if test="contains(ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/ead:num/text(), 'SdArch')">
+                <marc:datafield tag="505" ind1=" " ind2=" ">
+                    <marc:subfield code="a">
+                        <xsl:choose>
+                            <xsl:when test="ead:archdesc/ead:dsc/ead:c01[@level='file']/ead:did/ead:unittitle">
+                                <xsl:for-each select="ead:archdesc/ead:dsc/ead:c01[@level='file']/ead:did/ead:unittitle">
+                                    <xsl:choose>
+                                       <xsl:when test="not(position()=last())">
+                                          <xsl:value-of select="."/>
+                                           <xsl:text> -- </xsl:text>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:value-of select="."/>
+                                            <xsl:text>.</xsl:text>
+                                     </xsl:otherwise>
+                                   </xsl:choose>
+                                </xsl:for-each>
+                            </xsl:when>
+                            <xsl:when test="ead:archdesc/ead:dsc/ead:c01[@level='series']/ead:c02[@level='file']/ead:did/ead:unittitle">
+                                <xsl:for-each select="ead:archdesc/ead:dsc/ead:c01/ead:c02[@level='file']/ead:did/ead:unittitle">
+                                    <xsl:choose>
+                                        <xsl:when test="not(position()=last())">
+                                            <xsl:value-of select="."/>
+                                            <xsl:text> -- </xsl:text>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:value-of select="."/>
+                                            <xsl:text>.</xsl:text>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </xsl:for-each>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:text>CONTENTS</xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </marc:subfield>
+                </marc:datafield>
+            </xsl:if>
+            
             <xsl:for-each select="ead:archdesc/ead:accessrestrict/ead:p">
                 <marc:datafield tag="506" ind1=" " ind2=" ">
                     <marc:subfield code="a">

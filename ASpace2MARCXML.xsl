@@ -19,46 +19,11 @@
     
     <xsl:template match="ead:ead">
         <xsl:variable name="titleString">
-            <xsl:analyze-string select="normalize-space(ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text())" regex="A Guide to the (.*?)(\d{{4}}.*\)?)$">
+            <xsl:analyze-string select="normalize-space(ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text())" regex="A Guide to the (.*?)$">
                 <xsl:matching-substring>
                     <xsl:value-of select="normalize-space(regex-group(1))"/>
                 </xsl:matching-substring>
             </xsl:analyze-string>
-        </xsl:variable>
-        
-        <xsl:variable name="dateString">
-            <xsl:analyze-string select="normalize-space(ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/text())" regex="A Guide to .*?(\d{{4}}.*\)?)$">
-                <xsl:matching-substring>
-                    <xsl:value-of select="regex-group(1)"/>
-                </xsl:matching-substring>
-            </xsl:analyze-string>
-        </xsl:variable>
-        
-        <xsl:variable name="date1">
-            <xsl:analyze-string select="$dateString" regex="^\d{{4}}">
-                <xsl:matching-substring>
-                    <xsl:value-of select="."/>
-                </xsl:matching-substring>
-            </xsl:analyze-string>
-        </xsl:variable>
-        
-        <xsl:variable name="date2">
-            <xsl:choose>
-                <xsl:when test="contains($dateString, '(')">
-                    <xsl:analyze-string select="$dateString" regex="(\d{{4}}) \(">
-                        <xsl:matching-substring>
-                            <xsl:value-of select="regex-group(1)"/>
-                        </xsl:matching-substring>
-                    </xsl:analyze-string>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:analyze-string select="$dateString" regex="(\d{{4}})$">
-                        <xsl:matching-substring>
-                            <xsl:value-of select="regex-group(1)"/>
-                        </xsl:matching-substring>
-                    </xsl:analyze-string>
-                </xsl:otherwise>
-            </xsl:choose>
         </xsl:variable>
         
         <marc:record>
@@ -68,19 +33,7 @@
             <marc:controlfield tag="008">
                 <xsl:value-of
                     select="format-date(current-date(),'[Y,2-2][M01][D01]')"/>
-                <xsl:choose>
-                    <xsl:when test="$date1=$date2">
-                        <xsl:text>s</xsl:text>
-                        <xsl:value-of select="$date1"/>
-                        <xsl:text>    </xsl:text>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:text>i</xsl:text>
-                        <xsl:value-of select="$date1"/>
-                        <xsl:value-of select="$date2"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-                <xsl:text>vau                 eng d</xsl:text>
+                <xsl:text>         vau                 eng d</xsl:text>
             </marc:controlfield>
             
             <marc:datafield tag="040" ind1=" " ind2=" ">
@@ -120,16 +73,8 @@
             <marc:datafield tag="245" ind1="1" ind2="{$nonfilingChars}">
                 <marc:subfield code="a">
                     <xsl:value-of select="concat(upper-case(substring($titleString, 1, 1)), substring($titleString, 2))"/>
-                    <xsl:if test="not($dateString)">
-                        <xsl:text>.</xsl:text>
-                    </xsl:if>
+                    <xsl:text>.</xsl:text>
                 </marc:subfield>
-                <xsl:if test="$dateString">
-                    <marc:subfield code="f">
-                        <xsl:value-of select="$dateString"/>
-                        <xsl:text>.</xsl:text>
-                    </marc:subfield>
-                </xsl:if>
             </marc:datafield>
             
             <xsl:for-each select="ead:archdesc/ead:did/ead:physdesc/ead:extent[@altrender]/..">
@@ -179,29 +124,15 @@
                 <marc:datafield tag="505" ind1=" " ind2=" ">
                     <marc:subfield code="a">
                         <xsl:choose>
-                            <xsl:when test="ead:archdesc/ead:dsc/ead:c01[@level='file']/ead:did/ead:unittitle">
-                                <xsl:for-each select="ead:archdesc/ead:dsc/ead:c01[@level='file']/ead:did/ead:unittitle">
-                                    <xsl:choose>
-                                       <xsl:when test="not(position()=last())">
-                                          <xsl:value-of select="."/>
-                                           <xsl:text> -- </xsl:text>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <xsl:value-of select="."/>
-                                            <xsl:text>.</xsl:text>
-                                     </xsl:otherwise>
-                                   </xsl:choose>
-                                </xsl:for-each>
-                            </xsl:when>
-                            <xsl:when test="ead:archdesc/ead:dsc/ead:c01[@level='series']/ead:c02[@level='file']/ead:did/ead:unittitle">
-                                <xsl:for-each select="ead:archdesc/ead:dsc/ead:c01/ead:c02[@level='file']/ead:did/ead:unittitle">
+                            <xsl:when test="ead:archdesc/ead:dsc//*[@level='file']/ead:did/ead:unittitle">
+                                <xsl:for-each select="ead:archdesc/ead:dsc//*[@level='file']/ead:did/ead:unittitle">
                                     <xsl:choose>
                                         <xsl:when test="not(position()=last())">
-                                            <xsl:value-of select="."/>
+                                            <xsl:value-of select="normalize-space(.)"/>
                                             <xsl:text> -- </xsl:text>
                                         </xsl:when>
                                         <xsl:otherwise>
-                                            <xsl:value-of select="."/>
+                                            <xsl:value-of select="normalize-space(.)"/>
                                             <xsl:text>.</xsl:text>
                                         </xsl:otherwise>
                                     </xsl:choose>
